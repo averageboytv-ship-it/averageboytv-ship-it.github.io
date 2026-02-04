@@ -237,6 +237,46 @@
       cursor: pointer;
       font-weight: bold;
     }
+
+    /* Mascot */
+    .mascot {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 90px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 15;
+      cursor: pointer;
+    }
+
+    .mascot-body {
+      font-size: 48px;
+      animation: mascotFloat 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 10px #00ff9c);
+    }
+
+    .mascot-glow {
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,255,140,0.4), transparent 70%);
+      animation: mascotPulse 2.5s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    @keyframes mascotFloat {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    @keyframes mascotPulse {
+      0%,100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
   </style>
 </head>
 <body>
@@ -307,6 +347,12 @@
     </div>
   </div>
 
+  <!-- Mascot -->
+  <div class="mascot">
+    <div class="mascot-glow"></div>
+    <div class="mascot-body">🐒</div>
+  </div>
+
   <script>
     function search(engine) {
       const q = document.getElementById('query').value.trim();
@@ -336,11 +382,9 @@
       panel.classList.toggle("open");
     }
 
-    /* CLICK OUTSIDE TO CLOSE */
     document.addEventListener("click", function(e) {
       const panel = document.getElementById("settingsPanel");
       const btn = document.querySelector(".settings-btn");
-
       if (!panel.contains(e.target) && !btn.contains(e.target)) {
         panel.classList.remove("open");
       }
@@ -383,6 +427,10 @@
     }
 
     loadSettings();
+
+    document.querySelector(".mascot").addEventListener("click", () => {
+      alert("Noko (your NatureMonkey mascot) says hi! 🌿🐒");
+    });
   </script>
 
 </body>
