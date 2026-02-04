@@ -16,39 +16,43 @@
       color: #e0f4ff;
       overflow: hidden;
       background: radial-gradient(circle at top, #06131f 0, #02030a 45%, #000000 100%);
-      animation: bgShift 18s ease-in-out infinite alternate;
+      transition: background 0.6s ease;
     }
 
-    @keyframes bgShift {
-      0% { background: radial-gradient(circle at top, #06131f, #02030a 45%, #000000); }
-      50% { background: radial-gradient(circle at center, #050018, #020617 40%, #000000); }
-      100% { background: radial-gradient(circle at bottom, #020617, #050018 40%, #000000); }
+    /* THEMES */
+    body.dark {
+      background: #000000;
+    }
+
+    body.forest {
+      background: radial-gradient(circle at center, #001f0f, #000000 80%);
+    }
+
+    /* Floating Orbs */
+    .orb, .orb2 {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(4px);
+      z-index: 0;
     }
 
     .orb {
-      position: fixed;
       width: 420px;
       height: 420px;
-      border-radius: 50%;
       background: radial-gradient(circle, rgba(0,255,140,0.35), transparent 60%);
-      filter: blur(4px);
       top: -80px;
       left: -60px;
       animation: orbFloat 16s ease-in-out infinite alternate;
-      pointer-events: none;
     }
 
     .orb2 {
-      position: fixed;
       width: 380px;
       height: 380px;
-      border-radius: 50%;
       background: radial-gradient(circle, rgba(0,200,255,0.25), transparent 60%);
-      filter: blur(4px);
       bottom: -60px;
       right: -40px;
       animation: orbFloat2 20s ease-in-out infinite alternate;
-      pointer-events: none;
     }
 
     @keyframes orbFloat {
@@ -61,6 +65,7 @@
       100% { transform: translate(-40px,-40px); opacity: 1; }
     }
 
+    /* Container */
     .container {
       position: relative;
       z-index: 2;
@@ -70,18 +75,20 @@
       padding: 20px;
     }
 
-    h1 {
-      font-size: 56px;
-      margin-bottom: 6px;
+    /* LOGO */
+    .logo {
+      font-size: 64px;
+      font-weight: bold;
       color: #00ff9c;
-      letter-spacing: 2px;
-      text-shadow: 0 0 15px #00ff9c, 0 0 35px #00ff9c;
-      animation: titlePulse 3.5s ease-in-out infinite;
+      letter-spacing: 3px;
+      text-shadow: 0 0 20px #00ff9c, 0 0 40px #00ff9c;
+      animation: logoPulse 3s ease-in-out infinite;
+      font-family: "Trebuchet MS", sans-serif;
     }
 
-    @keyframes titlePulse {
-      0%,100% { text-shadow: 0 0 15px #00ff9c, 0 0 35px #00ff9c; }
-      50% { text-shadow: 0 0 25px #00ff9c, 0 0 55px #00ff9c; }
+    @keyframes logoPulse {
+      0%,100% { text-shadow: 0 0 20px #00ff9c, 0 0 40px #00ff9c; }
+      50% { text-shadow: 0 0 30px #00ff9c, 0 0 60px #00ff9c; }
     }
 
     .tagline {
@@ -91,6 +98,7 @@
       opacity: 0.9;
     }
 
+    /* Search Bar */
     #query {
       width: 70vw;
       max-width: 560px;
@@ -102,11 +110,9 @@
       font-size: 16px;
       outline: none;
       box-shadow: 0 0 15px rgba(0,255,140,0.5);
-      backdrop-filter: blur(6px);
     }
 
-    #query::placeholder { color: #6f8fb0; }
-
+    /* Buttons */
     .engine-buttons {
       margin-top: 18px;
       display: flex;
@@ -135,6 +141,7 @@
       box-shadow: 0 0 18px rgba(0,255,140,1);
     }
 
+    /* Quick Tiles */
     .tiles {
       margin-top: 28px;
       display: flex;
@@ -160,7 +167,6 @@
       transform: translateY(-2px);
       box-shadow: 0 0 18px rgba(0,255,140,0.8);
       border-color: #00ff9c;
-      background: rgba(5,18,60,0.95);
     }
 
     .tile-title {
@@ -170,21 +176,78 @@
       text-shadow: 0 0 8px #00ff9c;
     }
 
-    .footer {
-      margin-top: 26px;
-      font-size: 12px;
-      color: #7fa9d9;
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-      opacity: 0.9;
+    /* Settings Button */
+    .settings-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(0,255,140,0.2);
+      border: 2px solid #00ff9c;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #00ffb3;
+      font-weight: bold;
+      text-shadow: 0 0 10px #00ff9c;
+      box-shadow: 0 0 15px rgba(0,255,140,0.5);
+      transition: 0.2s;
+      z-index: 10;
     }
 
-    .clock {
-      font-family: Consolas, monospace;
-      color: #cfe8ff;
+    .settings-btn:hover {
+      background: #00ff9c;
+      color: #000;
     }
+
+    /* Settings Panel */
+    .settings-panel {
+      position: fixed;
+      top: 0;
+      right: -350px;
+      width: 300px;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      border-left: 2px solid #00ff9c;
+      padding: 20px;
+      box-shadow: -5px 0 20px rgba(0,255,140,0.4);
+      transition: right 0.4s ease;
+      z-index: 20;
+      color: #d7ffe9;
+    }
+
+    .settings-panel.open {
+      right: 0;
+    }
+
+    .settings-panel h2 {
+      color: #00ffb3;
+      text-shadow: 0 0 10px #00ff9c;
+      margin-bottom: 10px;
+    }
+
+    .settings-panel label {
+      display: block;
+      margin: 10px 0 5px;
+      font-size: 14px;
+    }
+
+    .settings-panel select,
+    .settings-panel input[type="checkbox"] {
+      margin-bottom: 10px;
+    }
+
+    .reset-btn {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background: #ff4d4d;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
   </style>
 </head>
 <body>
@@ -192,11 +255,36 @@
   <div class="orb"></div>
   <div class="orb2"></div>
 
+  <div class="settings-btn" onclick="toggleSettings()">⚙ Settings</div>
+
+  <div class="settings-panel" id="settingsPanel">
+    <h2>Settings</h2>
+
+    <label>Theme:</label>
+    <select id="themeSelect" onchange="applyTheme()">
+      <option value="neon">Neon</option>
+      <option value="dark">Dark</option>
+      <option value="forest">Forest</option>
+    </select>
+
+    <label>Show Quick Tiles:</label>
+    <input type="checkbox" id="toggleTiles" checked onchange="toggleTilesFunc()">
+
+    <label>Default Search Engine:</label>
+    <select id="defaultEngine" onchange="saveSettings()">
+      <option value="google">Google</option>
+      <option value="bing">Bing</option>
+      <option value="duckduckgo">DuckDuckGo</option>
+    </select>
+
+    <button class="reset-btn" onclick="resetSettings()">Reset Settings</button>
+  </div>
+
   <div class="container">
-    <h1>NatureMonkey</h1>
+    <div class="logo">NatureMonkey</div>
     <div class="tagline">A clean, neon-powered start to your web.</div>
 
-    <input type="text" id="query" placeholder="Search the web, YouTube, or Wikipedia...">
+    <input type="text" id="query" placeholder="Search the web...">
 
     <div class="engine-buttons">
       <button onclick="search('google')">Google</button>
@@ -206,7 +294,7 @@
       <button onclick="search('wikipedia')">Wikipedia</button>
     </div>
 
-    <div class="tiles">
+    <div class="tiles" id="tiles">
       <div class="tile" onclick="openLink('https://www.youtube.com')">
         <div class="tile-title">YouTube</div>
         Videos & music
@@ -228,11 +316,6 @@
         Code & projects
       </div>
     </div>
-
-    <div class="footer">
-      <div class="clock" id="clock"></div>
-      <div>NatureMonkey Browser</div>
-    </div>
   </div>
 
   <script>
@@ -251,21 +334,55 @@
     }
 
     document.getElementById('query').addEventListener('keydown', e => {
-      if (e.key === 'Enter') search('google');
+      if (e.key === 'Enter') {
+        const def = localStorage.getItem("defaultEngine") || "google";
+        search(def);
+      }
     });
 
     function openLink(url) { window.location.href = url; }
 
-    function updateClock() {
-      const el = document.getElementById('clock');
-      const now = new Date();
-      const t = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      const d = now.toLocaleDateString();
-      el.textContent = `${t} • ${d}`;
+    function toggleSettings() {
+      document.getElementById("settingsPanel").classList.toggle("open");
     }
 
-    updateClock();
-    setInterval(updateClock, 1000);
+    function applyTheme() {
+      const theme = document.getElementById("themeSelect").value;
+      document.body.className = theme === "neon" ? "" : theme;
+      saveSettings();
+    }
+
+    function toggleTilesFunc() {
+      const show = document.getElementById("toggleTiles").checked;
+      document.getElementById("tiles").style.display = show ? "flex" : "none";
+      saveSettings();
+    }
+
+    function saveSettings() {
+      localStorage.setItem("theme", document.getElementById("themeSelect").value);
+      localStorage.setItem("showTiles", document.getElementById("toggleTiles").checked);
+      localStorage.setItem("defaultEngine", document.getElementById("defaultEngine").value);
+    }
+
+    function loadSettings() {
+      const theme = localStorage.getItem("theme") || "neon";
+      const showTiles = localStorage.getItem("showTiles") !== "false";
+      const def = localStorage.getItem("defaultEngine") || "google";
+
+      document.getElementById("themeSelect").value = theme;
+      document.getElementById("defaultEngine").value = def;
+      document.getElementById("toggleTiles").checked = showTiles;
+
+      applyTheme();
+      toggleTilesFunc();
+    }
+
+    function resetSettings() {
+      localStorage.clear();
+      loadSettings();
+    }
+
+    loadSettings();
   </script>
 
 </body>
