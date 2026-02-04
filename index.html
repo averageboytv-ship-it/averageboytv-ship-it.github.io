@@ -2,184 +2,270 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Neon Games</title>
+  <title>NatureMonkey Browser</title>
   <style>
+    * { box-sizing: border-box; }
+
     body {
-      background: #05010f;
-      color: #e0e0ff;
-      font-family: 'Arial', sans-serif;
-      text-align: center;
       margin: 0;
-      padding: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      color: #e0f4ff;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #06131f 0, #02030a 45%, #000000 100%);
+      animation: bgShift 18s ease-in-out infinite alternate;
+    }
+
+    @keyframes bgShift {
+      0% { background: radial-gradient(circle at top, #06131f, #02030a 45%, #000000); }
+      50% { background: radial-gradient(circle at center, #050018, #020617 40%, #000000); }
+      100% { background: radial-gradient(circle at bottom, #020617, #050018 40%, #000000); }
+    }
+
+    .orb {
+      position: fixed;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,255,140,0.35), transparent 60%);
+      filter: blur(4px);
+      top: -80px;
+      left: -60px;
+      animation: orbFloat 16s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    .orb2 {
+      position: fixed;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,200,255,0.25), transparent 60%);
+      filter: blur(4px);
+      bottom: -60px;
+      right: -40px;
+      animation: orbFloat2 20s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes orbFloat {
+      0% { transform: translate(0,0); opacity: 0.7; }
+      100% { transform: translate(40px,60px); opacity: 1; }
+    }
+
+    @keyframes orbFloat2 {
+      0% { transform: translate(0,0); opacity: 0.6; }
+      100% { transform: translate(-40px,-40px); opacity: 1; }
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 800px;
+      width: 100%;
+      padding: 20px;
     }
 
     h1 {
-      margin-top: 40px;
-      font-size: 48px;
-      color: #7df9ff;
-      text-shadow: 0 0 15px #00eaff, 0 0 30px #00eaff;
+      font-size: 56px;
+      margin-bottom: 6px;
+      color: #00ff9c;
+      letter-spacing: 2px;
+      text-shadow: 0 0 15px #00ff9c, 0 0 35px #00ff9c;
+      animation: titlePulse 3.5s ease-in-out infinite;
     }
 
-    p {
-      font-size: 18px;
-      color: #b8b8ff;
+    @keyframes titlePulse {
+      0%,100% { text-shadow: 0 0 15px #00ff9c, 0 0 35px #00ff9c; }
+      50% { text-shadow: 0 0 25px #00ff9c, 0 0 55px #00ff9c; }
     }
 
-    #searchBar {
-      margin-top: 20px;
-      padding: 10px;
-      width: 60%;
-      max-width: 400px;
-      border-radius: 8px;
-      border: 2px solid #7df9ff;
-      background: #0a0220;
-      color: #e0e0ff;
+    .tagline {
+      font-size: 15px;
+      color: #a9ffd8;
+      margin-bottom: 24px;
+      opacity: 0.9;
+    }
+
+    #query {
+      width: 70vw;
+      max-width: 560px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 2px solid #00ff9c;
+      background: rgba(2, 6, 23, 0.95);
+      color: #e0f4ff;
       font-size: 16px;
-      box-shadow: 0 0 10px #00eaff;
+      outline: none;
+      box-shadow: 0 0 15px rgba(0,255,140,0.5);
+      backdrop-filter: blur(6px);
     }
 
-    .game-grid {
+    #query::placeholder { color: #6f8fb0; }
+
+    .engine-buttons {
+      margin-top: 18px;
       display: flex;
-      flex-wrap: wrap;
       justify-content: center;
-      gap: 25px;
-      margin-top: 40px;
-      padding-bottom: 60px;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
-    .card {
-      background: #0a0220;
-      border: 2px solid #7df9ff;
-      border-radius: 12px;
-      width: 240px;
-      padding: 20px;
-      box-shadow: 0 0 20px #00eaff55;
-      transition: 0.2s;
+    button {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid #00ff9c;
+      background: rgba(2, 6, 23, 0.9);
+      color: #e0f4ff;
+      font-size: 13px;
+      cursor: pointer;
+      text-shadow: 0 0 8px #00ff9c;
+      box-shadow: 0 0 12px rgba(0,255,140,0.7);
+      transition: 0.15s;
     }
 
-    .card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 30px #00eaffaa;
+    button:hover {
+      background: #00ff9c;
+      color: #020617;
+      transform: translateY(-1px);
+      box-shadow: 0 0 18px rgba(0,255,140,1);
     }
 
-    .card h2 {
-      color: #7df9ff;
-      font-size: 22px;
-      margin-bottom: 10px;
-      text-shadow: 0 0 10px #00eaff;
+    .tiles {
+      margin-top: 28px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
     }
 
-    .card p {
-      color: #cfcfff;
-      font-size: 14px;
-      margin-bottom: 15px;
+    .tile {
+      width: 110px;
+      padding: 10px 8px;
+      border-radius: 14px;
+      background: rgba(3,10,35,0.9);
+      border: 1px solid rgba(0,255,140,0.4);
+      box-shadow: 0 0 12px rgba(0,255,140,0.35);
+      cursor: pointer;
+      transition: 0.15s;
+      font-size: 12px;
+      color: #d7ffe9;
     }
 
-    .card a {
-      color: #ff66ff;
-      font-size: 16px;
-      text-decoration: none;
+    .tile:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 18px rgba(0,255,140,0.8);
+      border-color: #00ff9c;
+      background: rgba(5,18,60,0.95);
+    }
+
+    .tile-title {
       font-weight: bold;
-      text-shadow: 0 0 10px #ff00ff;
+      margin-bottom: 4px;
+      color: #00ffb3;
+      text-shadow: 0 0 8px #00ff9c;
     }
 
-    .card a:hover {
-      text-decoration: underline;
+    .footer {
+      margin-top: 26px;
+      font-size: 12px;
+      color: #7fa9d9;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      opacity: 0.9;
+    }
+
+    .clock {
+      font-family: Consolas, monospace;
+      color: #cfe8ff;
     }
   </style>
 </head>
-
 <body>
-  <h1>Neon Games</h1>
-  <p>Welcome to Neon Games — choose a game below.</p>
 
-  <input type="text" id="searchBar" placeholder="Search games...">
+  <div class="orb"></div>
+  <div class="orb2"></div>
 
-  <div class="game-grid">
+  <div class="container">
+    <h1>NatureMonkey</h1>
+    <div class="tagline">A clean, neon-powered start to your web.</div>
 
-    <!-- 1 -->
-    <div class="card">
-      <h2>OvO</h2>
-      <p>Fast parkour platformer with precise movement.</p>
-      <a href="https://ovo-game.github.io" target="_blank">Play</a>
+    <input type="text" id="query" placeholder="Search the web, YouTube, or Wikipedia...">
+
+    <div class="engine-buttons">
+      <button onclick="search('google')">Google</button>
+      <button onclick="search('bing')">Bing</button>
+      <button onclick="search('duckduckgo')">DuckDuckGo</button>
+      <button onclick="search('youtube')">YouTube</button>
+      <button onclick="search('wikipedia')">Wikipedia</button>
     </div>
 
-    <!-- 2 -->
-    <div class="card">
-      <h2>Vex 5</h2>
-      <p>Modern stickman obstacle course with traps.</p>
-      <a href="https://vex5.net" target="_blank">Play</a>
+    <div class="tiles">
+      <div class="tile" onclick="openLink('https://www.youtube.com')">
+        <div class="tile-title">YouTube</div>
+        Videos & music
+      </div>
+      <div class="tile" onclick="openLink('https://discord.com/app')">
+        <div class="tile-title">Discord</div>
+        Chat & servers
+      </div>
+      <div class="tile" onclick="openLink('https://www.roblox.com')">
+        <div class="tile-title">Roblox</div>
+        Games & fun
+      </div>
+      <div class="tile" onclick="openLink('https://mail.google.com')">
+        <div class="tile-title">Gmail</div>
+        Email
+      </div>
+      <div class="tile" onclick="openLink('https://github.com')">
+        <div class="tile-title">GitHub</div>
+        Code & projects
+      </div>
     </div>
 
-    <!-- 3 -->
-    <div class="card">
-      <h2>Tunnel Rush</h2>
-      <p>Dodge obstacles in a neon tunnel at high speed.</p>
-      <a href="https://tunnelrush.app" target="_blank">Play</a>
+    <div class="footer">
+      <div class="clock" id="clock"></div>
+      <div>NatureMonkey Browser</div>
     </div>
-
-    <!-- 4 -->
-    <div class="card">
-      <h2>Color Tunnel</h2>
-      <p>Roll through a colorful tunnel and avoid shapes.</p>
-      <a href="https://colortunnel.io" target="_blank">Play</a>
-    </div>
-
-    <!-- 5 -->
-    <div class="card">
-      <h2>Drift Boss</h2>
-      <p>Tap to drift around corners and stay on the track.</p>
-      <a href="https://driftboss.io" target="_blank">Play</a>
-    </div>
-
-    <!-- 6 -->
-    <div class="card">
-      <h2>Moto X3M</h2>
-      <p>Bike stunt game with flips and crazy tracks.</p>
-      <a href="https://motox3m.co" target="_blank">Play</a>
-    </div>
-
-    <!-- 7 -->
-    <div class="card">
-      <h2>2048</h2>
-      <p>Slide tiles to combine numbers and reach 2048.</p>
-      <a href="https://play2048.co" target="_blank">Play</a>
-    </div>
-
-    <!-- 8 -->
-    <div class="card">
-      <h2>Snake Neon</h2>
-      <p>Classic snake with a glowing neon twist.</p>
-      <a href="https://playsnake.org" target="_blank">Play</a>
-    </div>
-
-    <!-- 9 -->
-    <div class="card">
-      <h2>Basketball Stars</h2>
-      <p>1v1 basketball with dunks and power-ups.</p>
-      <a href="https://basketballstars.co" target="_blank">Play</a>
-    </div>
-
-    <!-- 10 -->
-    <div class="card">
-      <h2>Idle Breakout</h2>
-      <p>Break bricks, upgrade balls, and watch chaos.</p>
-      <a href="https://idlebreakout.io" target="_blank">Play</a>
-    </div>
-
   </div>
 
   <script>
-    const searchBar = document.getElementById("searchBar");
-    searchBar.addEventListener("keyup", function() {
-      const term = searchBar.value.toLowerCase();
-      const cards = document.querySelectorAll(".card");
+    function search(engine) {
+      const q = document.getElementById('query').value.trim();
+      if (!q) return;
 
-      cards.forEach(card => {
-        const title = card.querySelector("h2").textContent.toLowerCase();
-        card.style.display = title.includes(term) ? "block" : "none";
-      });
+      let url = '';
+      if (engine === 'google') url = 'https://www.google.com/search?q=' + encodeURIComponent(q);
+      if (engine === 'bing') url = 'https://www.bing.com/search?q=' + encodeURIComponent(q);
+      if (engine === 'duckduckgo') url = 'https://duckduckgo.com/?q=' + encodeURIComponent(q);
+      if (engine === 'youtube') url = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q);
+      if (engine === 'wikipedia') url = 'https://en.wikipedia.org/wiki/Special:Search?search=' + encodeURIComponent(q);
+
+      window.location.href = url;
+    }
+
+    document.getElementById('query').addEventListener('keydown', e => {
+      if (e.key === 'Enter') search('google');
     });
+
+    function openLink(url) { window.location.href = url; }
+
+    function updateClock() {
+      const el = document.getElementById('clock');
+      const now = new Date();
+      const t = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const d = now.toLocaleDateString();
+      el.textContent = `${t} • ${d}`;
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
   </script>
 
 </body>
