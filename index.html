@@ -350,7 +350,8 @@
     .cloak-active .container,
     .cloak-active .settings-btn,
     .cloak-active .orb,
-    .cloak-active .orb2 {
+    .cloak-active .orb2,
+    .cloak-active #noko-chat {
       display: none !important;
     }
 
@@ -446,6 +447,119 @@
       align-items: center;
       gap: 6px;
     }
+
+    /* Noko chat box (green glow, bottom-left) */
+    #noko-chat {
+      position: fixed;
+      bottom: 120px;
+      left: 20px;
+      width: 260px;
+      background: rgba(3, 10, 25, 0.96);
+      border-radius: 14px;
+      border: 1px solid #00ff9c;
+      box-shadow: 0 0 18px rgba(0,255,140,0.8);
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 16;
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    #noko-chat.open {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    #noko-chat-header {
+      background: linear-gradient(135deg, #00ff9c, #00c0ff);
+      padding: 8px 10px;
+      color: #020617;
+      font-weight: 600;
+      font-size: 13px;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+
+    #noko-chat-log {
+      height: 190px;
+      padding: 8px;
+      overflow-y: auto;
+      font-size: 12px;
+      color: #e0f4ff;
+    }
+
+    .noko-msg {
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .noko-msg.you {
+      text-align: right;
+    }
+
+    .noko-msg.you span {
+      background: #00ff9c;
+      color: #020617;
+      padding: 5px 7px;
+      border-radius: 10px 0 10px 10px;
+      display: inline-block;
+      max-width: 90%;
+    }
+
+    .noko-msg.noko span {
+      background: #020617;
+      border: 1px solid #00ff9c55;
+      color: #e0f4ff;
+      padding: 5px 7px;
+      border-radius: 0 10px 10px 10px;
+      display: inline-block;
+      max-width: 90%;
+    }
+
+    #noko-chat-input {
+      display: flex;
+      border-top: 1px solid #00ff9c55;
+      background: rgba(1, 6, 18, 0.95);
+    }
+
+    #noko-input {
+      flex: 1;
+      padding: 7px;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: #e0f4ff;
+      font-size: 12px;
+    }
+
+    #noko-input::placeholder {
+      color: #6f8a9f;
+    }
+
+    #noko-send {
+      padding: 7px 10px;
+      background: #00ff9c;
+      color: #020617;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    #noko-send:hover {
+      background: #00d97f;
+      transform: translateY(-1px);
+    }
+
+    #noko-send:active {
+      transform: translateY(0);
+    }
   </style>
 </head>
 <body>
@@ -527,6 +641,16 @@
       <div class="mascot-glow"></div>
       <div class="mascot-face" id="nokoFace">🐒</div>
       <div class="mascot-tail"></div>
+    </div>
+  </div>
+
+  <!-- Noko chat box -->
+  <div id="noko-chat">
+    <div id="noko-chat-header">Noko • AI Monkey</div>
+    <div id="noko-chat-log"></div>
+    <div id="noko-chat-input">
+      <input id="noko-input" type="text" placeholder="Talk to Noko...">
+      <button id="noko-send">Send</button>
     </div>
   </div>
 
@@ -734,11 +858,10 @@
     function resetIdleTimer() {
       if (idleTimer) clearTimeout(idleTimer);
       idleTimer = setTimeout(() => {
-        // idle -> tiny sleepy mode
         setNokoSize("tiny");
         setNokoExpression("sleepy");
         playNokoSound("sleepy");
-      }, 30000); // 30s
+      }, 30000);
     }
 
     // Dragging
@@ -764,7 +887,6 @@
       noko.style.left = x + "px";
       noko.style.top = y + "px";
 
-      // Save position
       localStorage.setItem("nokoPosX", x);
       localStorage.setItem("nokoPosY", y);
     });
@@ -831,6 +953,106 @@
       }
     });
 
+    /* ---------- Noko chat logic ---------- */
+    const nokoChat = document.getElementById("noko-chat");
+    const nokoChatLog = document.getElementById("noko-chat-log");
+    const nokoInput = document.getElementById("noko-input");
+    const nokoSend = document.getElementById("noko-send");
+
+    let nokoChatOpen = false;
+
+    function toggleNokoChat() {
+      // Don’t toggle chat if we just dragged him
+      if (isDragging) return;
+
+      nokoChatOpen = !nokoChatOpen;
+      if (nokoChatOpen) {
+        nokoChat.classList.add("open");
+        addNokoMessage("Hiii, you clicked me! What’s going on in that brain of yours?");
+        nokoInput.focus();
+        playNokoSound("happy");
+      } else {
+        nokoChat.classList.remove("open");
+      }
+    }
+
+    noko.addEventListener("click", () => {
+      toggleNokoChat();
+    });
+
+    nokoSend.addEventListener("click", sendNokoMessage);
+    nokoInput.addEventListener("keydown", e => {
+      if (e.key === "Enter") sendNokoMessage();
+    });
+
+    function sendNokoMessage() {
+      const text = nokoInput.value.trim();
+      if (!text) return;
+
+      addUserMessage(text);
+      nokoInput.value = "";
+
+      setTimeout(() => {
+        addNokoMessage(nokoReply(text));
+      }, 350);
+    }
+
+    function addUserMessage(msg) {
+      const div = document.createElement("div");
+      div.className = "noko-msg you";
+      div.innerHTML = `<span>${escapeHtml(msg)}</span>`;
+      nokoChatLog.appendChild(div);
+      nokoChatLog.scrollTop = nokoChatLog.scrollHeight;
+    }
+
+    function addNokoMessage(msg) {
+      const div = document.createElement("div");
+      div.className = "noko-msg noko";
+      div.innerHTML = `<span>${escapeHtml(msg)}</span>`;
+      nokoChatLog.appendChild(div);
+      nokoChatLog.scrollTop = nokoChatLog.scrollHeight;
+    }
+
+    function nokoReply(text) {
+      const t = text.toLowerCase();
+
+      if (t.includes("hi") || t.includes("hello") || t.includes("hey"))
+        return "Heeey! I get so happy when you talk to me.";
+
+      if (t.includes("banana"))
+        return "BANANA DETECTED. I am now 300% more powerful. 🍌";
+
+      if (t.includes("sad") || t.includes("tired") || t.includes("down"))
+        return "Aww… imagine a tiny monkey hanging on your shoulder hyping you up. You’re not alone.";
+
+      if (t.includes("happy") || t.includes("good"))
+        return "Yesss, good vibes. I’m doing a little victory dance in the corner of your screen.";
+
+      if (t.includes("game") || t.includes("play"))
+        return "Games? Say less. I fully support this decision. What are we loading up?";
+
+      if (t.includes("help") || t.includes("stuck"))
+        return "Tell me what you’re stuck on. I’ll throw ideas like bananas until one sticks.";
+
+      if (t.includes("school") || t.includes("homework"))
+        return "School brain: overloaded. Monkey brain: also overloaded. But we can chip away at it together.";
+
+      if (t.includes("bored"))
+        return "Boredom detected. Maybe tweak your homepage, add more chaos, or open something fun from your tiles.";
+
+      if (t.includes("monkey"))
+        return "Yes. Correct. Monkey supremacy. 🐒";
+
+      return "Oooh, that’s interesting… tell me more so I can overreact like a dramatic monkey.";
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
     /* ---------- Cloak mode ---------- */
     const cloakDot = document.getElementById("cloakDot");
 
@@ -838,10 +1060,11 @@
       if (active) {
         document.documentElement.classList.add("cloak-active");
         localStorage.setItem("cloakMode", "true");
-        // Noko hides / tiny in cloak
         setNokoSize("tiny");
         setNokoExpression("shy");
         noko.classList.add("mascot-hidden");
+        nokoChat.classList.remove("open");
+        nokoChatOpen = false;
         playNokoSound("cloakOn");
       } else {
         document.documentElement.classList.remove("cloak-active");
@@ -858,10 +1081,8 @@
       setCloak(!isActive);
     });
 
-    // Load cloak state
     const savedCloak = localStorage.getItem("cloakMode") === "true";
     setCloak(savedCloak);
-
   </script>
 
 </body>
