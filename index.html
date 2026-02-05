@@ -100,9 +100,7 @@
       font-size: 16px;
       outline: none;
       box-shadow: 0 0 15px rgba(0,255,140,0.5);
-    }
-
-    .engine-buttons {
+    }    .engine-buttons {
       margin-top: 18px;
       display: flex;
       justify-content: center;
@@ -226,340 +224,6 @@
       cursor: pointer;
       font-weight: bold;
     }
-
-    /* Noko mascot (AI monkey) */
-    .mascot {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 15;
-      cursor: grab;
-      user-select: none;
-      transition: transform 0.2s ease, filter 0.2s ease;
-    }
-
-    .mascot.dragging {
-      cursor: grabbing;
-      filter: drop-shadow(0 0 18px #00ff9c);
-    }
-
-    .mascot-core {
-      position: relative;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #ffe9c4, #f4b36b);
-      box-shadow: 0 0 18px rgba(0,255,140,0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: visible;
-    }
-
-    .mascot-face {
-      font-size: 32px;
-      pointer-events: none;
-    }
-
-    .mascot-glow {
-      position: absolute;
-      width: 120%;
-      height: 120%;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,255,140,0.4), transparent 70%);
-      animation: mascotPulse 2.5s ease-in-out infinite;
-      z-index: -1;
-    }
-
-    .mascot-tail {
-      position: absolute;
-      right: -18px;
-      bottom: 8px;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      border: 4px solid #f4b36b;
-      border-left-color: transparent;
-      border-top-color: transparent;
-      transform-origin: left center;
-      animation: tailWiggle 3s ease-in-out infinite;
-    }
-
-    @keyframes mascotPulse {
-      0%,100% { opacity: 0.6; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.15); }
-    }
-
-    @keyframes tailWiggle {
-      0%,100% { transform: rotate(10deg); }
-      50% { transform: rotate(-10deg); }
-    }
-
-    @keyframes mascotFloat {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
-    }
-
-    .mascot-floating {
-      animation: mascotFloat 3s ease-in-out infinite;
-    }
-
-    /* Size states */
-    .size-tiny .mascot-core { width: 40px; height: 40px; }
-    .size-tiny .mascot-face { font-size: 20px; }
-    .size-normal .mascot-core { width: 80px; height: 80px; }
-    .size-normal .mascot-face { font-size: 32px; }
-    .size-big .mascot-core { width: 120px; height: 120px; }
-    .size-big .mascot-face { font-size: 44px; }
-    .size-mega .mascot-core { width: 160px; height: 160px; }
-    .size-mega .mascot-face { font-size: 56px; }
-
-    .mascot-sleepy .mascot-face { filter: brightness(0.8); }
-    .mascot-hidden { opacity: 0; pointer-events: none; }
-
-    /* Hidden cloak dot */
-    .cloak-dot {
-      position: fixed;
-      top: 4px;
-      left: 4px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: transparent;
-      cursor: pointer;
-      z-index: 30;
-    }
-
-    .cloak-dot:hover {
-      background: rgba(255,255,255,0.1);
-    }
-
-    /* CLOAK MODE: fake learning site */
-    .cloak-wrapper {
-      display: none;
-      position: relative;
-      z-index: 2;
-      max-width: 900px;
-      width: 100%;
-      padding: 20px;
-      font-family: system-ui, sans-serif;
-      color: #222;
-    }
-
-    .cloak-active .container,
-    .cloak-active .settings-btn,
-    .cloak-active .orb,
-    .cloak-active .orb2,
-    .cloak-active #noko-chat {
-      display: none !important;
-    }
-
-    .cloak-active .cloak-wrapper {
-      display: block;
-    }
-
-    .cloak-active body {
-      background: #f4f5f7 !important;
-    }
-
-    .cloak-card {
-      background: #ffffff;
-      border-radius: 10px;
-      padding: 16px 18px;
-      margin-bottom: 14px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    }
-
-    .cloak-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-
-    .cloak-title {
-      font-size: 22px;
-      font-weight: 600;
-      color: #1f2933;
-    }
-
-    .cloak-sub {
-      font-size: 13px;
-      color: #6b7280;
-    }
-
-    .cloak-badge {
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: #e5f2ff;
-      color: #2563eb;
-      font-weight: 600;
-    }
-
-    .cloak-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-      margin-top: 6px;
-    }
-
-    .cloak-table th,
-    .cloak-table td {
-      padding: 6px 4px;
-      text-align: left;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .cloak-table th {
-      font-weight: 600;
-      color: #4b5563;
-    }
-
-    .cloak-tag {
-      font-size: 11px;
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: #ecfdf3;
-      color: #166534;
-      display: inline-block;
-    }
-
-    .cloak-input {
-      width: 100%;
-      padding: 8px 10px;
-      border-radius: 6px;
-      border: 1px solid #d1d5db;
-      font-size: 13px;
-      margin-top: 4px;
-    }
-
-    .cloak-small {
-      font-size: 11px;
-      color: #6b7280;
-      margin-top: 4px;
-    }
-
-    /* Simple toggle in settings for sound (label only, logic in JS) */
-    .settings-panel .inline {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* Noko chat box (green glow, bottom-left) */
-    #noko-chat {
-      position: fixed;
-      bottom: 120px;
-      left: 20px;
-      width: 260px;
-      background: rgba(3, 10, 25, 0.96);
-      border-radius: 14px;
-      border: 1px solid #00ff9c;
-      box-shadow: 0 0 18px rgba(0,255,140,0.8);
-      backdrop-filter: blur(10px);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      z-index: 16;
-      opacity: 0;
-      transform: translateY(10px);
-      pointer-events: none;
-      transition: opacity 0.2s ease, transform 0.2s ease;
-    }
-
-    #noko-chat.open {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-
-    #noko-chat-header {
-      background: linear-gradient(135deg, #00ff9c, #00c0ff);
-      padding: 8px 10px;
-      color: #020617;
-      font-weight: 600;
-      font-size: 13px;
-      text-align: center;
-      letter-spacing: 0.5px;
-    }
-
-    #noko-chat-log {
-      height: 190px;
-      padding: 8px;
-      overflow-y: auto;
-      font-size: 12px;
-      color: #e0f4ff;
-    }
-
-    .noko-msg {
-      margin-bottom: 6px;
-      line-height: 1.3;
-    }
-
-    .noko-msg.you {
-      text-align: right;
-    }
-
-    .noko-msg.you span {
-      background: #00ff9c;
-      color: #020617;
-      padding: 5px 7px;
-      border-radius: 10px 0 10px 10px;
-      display: inline-block;
-      max-width: 90%;
-    }
-
-    .noko-msg.noko span {
-      background: #020617;
-      border: 1px solid #00ff9c55;
-      color: #e0f4ff;
-      padding: 5px 7px;
-      border-radius: 0 10px 10px 10px;
-      display: inline-block;
-      max-width: 90%;
-    }
-
-    #noko-chat-input {
-      display: flex;
-      border-top: 1px solid #00ff9c55;
-      background: rgba(1, 6, 18, 0.95);
-    }
-
-    #noko-input {
-      flex: 1;
-      padding: 7px;
-      border: none;
-      outline: none;
-      background: transparent;
-      color: #e0f4ff;
-      font-size: 12px;
-    }
-
-    #noko-input::placeholder {
-      color: #6f8a9f;
-    }
-
-    #noko-send {
-      padding: 7px 10px;
-      background: #00ff9c;
-      color: #020617;
-      border: none;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 600;
-      transition: background 0.15s, transform 0.1s;
-    }
-
-    #noko-send:hover {
-      background: #00d97f;
-      transform: translateY(-1px);
-    }
-
-    #noko-send:active {
-      transform: translateY(0);
-    }
   </style>
 </head>
 <body>
@@ -633,9 +297,7 @@
         Code & projects
       </div>
     </div>
-  </div>
-
-  <!-- Noko AI Monkey (draggable) -->
+  </div>  <!-- Noko AI Monkey (draggable) -->
   <div class="mascot size-normal mascot-floating" id="noko">
     <div class="mascot-core">
       <div class="mascot-glow"></div>
@@ -696,394 +358,410 @@
       <div class="cloak-small">Today’s goal: 20 minutes of focused reading.</div>
       <input class="cloak-input" placeholder="Book / topic you’re reading...">
     </div>
-  </div>
+  </div><script>
+  /* ---------- OPENAI KEY (SET THIS IN PART 5) ---------- */
+  const OPENAI_API_KEY = "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"; 
+  const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
 
-  <script>
-    /* ---------- Search + settings ---------- */
-    function search(engine) {
-      const q = document.getElementById('query').value.trim();
-      if (!q) return;
+  /* ---------- Search + settings ---------- */
+  function search(engine) {
+    const q = document.getElementById('query').value.trim();
+    if (!q) return;
 
-      let url = '';
-      if (engine === 'google') url = 'https://www.google.com/search?q=' + encodeURIComponent(q);
-      if (engine === 'bing') url = 'https://www.bing.com/search?q=' + encodeURIComponent(q);
-      if (engine === 'duckduckgo') url = 'https://duckduckgo.com/?q=' + encodeURIComponent(q);
-      if (engine === 'youtube') url = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q);
-      if (engine === 'wikipedia') url = 'https://en.wikipedia.org/wiki/Special:Search?search=' + encodeURIComponent(q);
+    let url = '';
+    if (engine === 'google') url = 'https://www.google.com/search?q=' + encodeURIComponent(q);
+    if (engine === 'bing') url = 'https://www.bing.com/search?q=' + encodeURIComponent(q);
+    if (engine === 'duckduckgo') url = 'https://duckduckgo.com/?q=' + encodeURIComponent(q);
+    if (engine === 'youtube') url = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q);
+    if (engine === 'wikipedia') url = 'https://en.wikipedia.org/wiki/Special:Search?search=' + encodeURIComponent(q);
 
-      window.location.href = url;
-    }
+    window.location.href = url;
+  }
 
-    document.getElementById('query').addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        const def = localStorage.getItem("defaultEngine") || "google";
-        search(def);
-      }
-    });
-
-    function openLink(url) { window.location.href = url; }
-
-    function toggleSettings() {
-      const panel = document.getElementById("settingsPanel");
-      panel.classList.toggle("open");
-    }
-
-    document.addEventListener("click", function(e) {
-      const panel = document.getElementById("settingsPanel");
-      const btn = document.querySelector(".settings-btn");
-      if (!panel.contains(e.target) && !btn.contains(e.target)) {
-        panel.classList.remove("open");
-      }
-    });
-
-    function applyTheme() {
-      const theme = document.getElementById("themeSelect").value;
-      document.body.className = theme === "neon" ? "" : theme;
-      saveSettings();
-    }
-
-    function toggleTilesFunc() {
-      const show = document.getElementById("toggleTiles").checked;
-      document.getElementById("tiles").style.display = show ? "flex" : "none";
-      saveSettings();
-    }
-
-    function saveSettings() {
-      localStorage.setItem("theme", document.getElementById("themeSelect").value);
-      localStorage.setItem("showTiles", document.getElementById("toggleTiles").checked);
-      localStorage.setItem("defaultEngine", document.getElementById("defaultEngine").value);
-      localStorage.setItem("nokoSound", document.getElementById("nokoSoundToggle").checked);
-    }
-
-    function loadSettings() {
-      const theme = localStorage.getItem("theme") || "neon";
-      const showTiles = localStorage.getItem("showTiles") !== "false";
+  document.getElementById('query').addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
       const def = localStorage.getItem("defaultEngine") || "google";
-      const nokoSound = localStorage.getItem("nokoSound") !== "false";
-
-      document.getElementById("themeSelect").value = theme;
-      document.getElementById("defaultEngine").value = def;
-      document.getElementById("toggleTiles").checked = showTiles;
-      document.getElementById("nokoSoundToggle").checked = nokoSound;
-
-      applyTheme();
-      toggleTilesFunc();
+      search(def);
     }
+  });
 
-    function resetSettings() {
-      localStorage.clear();
-      loadSettings();
+  function openLink(url) { window.location.href = url; }
+
+  function toggleSettings() {
+    const panel = document.getElementById("settingsPanel");
+    panel.classList.toggle("open");
+  }
+
+  document.addEventListener("click", function(e) {
+    const panel = document.getElementById("settingsPanel");
+    const btn = document.querySelector(".settings-btn");
+    if (!panel.contains(e.target) && !btn.contains(e.target)) {
+      panel.classList.remove("open");
     }
+  });
 
+  function applyTheme() {
+    const theme = document.getElementById("themeSelect").value;
+    document.body.className = theme === "neon" ? "" : theme;
+    saveSettings();
+  }
+
+  function toggleTilesFunc() {
+    const show = document.getElementById("toggleTiles").checked;
+    document.getElementById("tiles").style.display = show ? "flex" : "none";
+    saveSettings();
+  }
+
+  function saveSettings() {
+    localStorage.setItem("theme", document.getElementById("themeSelect").value);
+    localStorage.setItem("showTiles", document.getElementById("toggleTiles").checked);
+    localStorage.setItem("defaultEngine", document.getElementById("defaultEngine").value);
+    localStorage.setItem("nokoSound", document.getElementById("nokoSoundToggle").checked);
+  }
+
+  function loadSettings() {
+    const theme = localStorage.getItem("theme") || "neon";
+    const showTiles = localStorage.getItem("showTiles") !== "false";
+    const def = localStorage.getItem("defaultEngine") || "google";
+    const nokoSound = localStorage.getItem("nokoSound") !== "false";
+
+    document.getElementById("themeSelect").value = theme;
+    document.getElementById("defaultEngine").value = def;
+    document.getElementById("toggleTiles").checked = showTiles;
+    document.getElementById("nokoSoundToggle").checked = nokoSound;
+
+    applyTheme();
+    toggleTilesFunc();
+  }
+
+  function resetSettings() {
+    localStorage.clear();
     loadSettings();
+  }
 
-    /* ---------- Noko sound engine (simple beeps) ---------- */
-    let audioCtx = null;
-    function playNokoSound(type) {
-      const soundEnabled = document.getElementById("nokoSoundToggle").checked;
-      if (!soundEnabled) return;
+  loadSettings();
 
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
+  /* ---------- Noko sound engine ---------- */
+  let audioCtx = null;
+  function playNokoSound(type) {
+    const soundEnabled = document.getElementById("nokoSoundToggle").checked;
+    if (!soundEnabled) return;
 
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-
-      let freq = 600;
-      if (type === "drag") freq = 700;
-      if (type === "drop") freq = 500;
-      if (type === "happy") freq = 800;
-      if (type === "excited") freq = 900;
-      if (type === "sleepy") freq = 300;
-      if (type === "shy") freq = 650;
-      if (type === "confused") freq = 450;
-      if (type === "cloakOn") freq = 350;
-      if (type === "cloakOff") freq = 750;
-      if (type === "banana") freq = 1000;
-      if (type === "games") freq = 950;
-      if (type === "help") freq = 550;
-      if (type === "sad") freq = 280;
-
-      osc.frequency.value = freq;
-      gain.gain.value = 0.12;
-
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-
-      osc.start();
-      osc.stop(audioCtx.currentTime + 0.12);
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     }
 
-    /* ---------- Noko AI monkey logic ---------- */
-    const noko = document.getElementById("noko");
-    const nokoFace = document.getElementById("nokoFace");
-    let nokoSizeState = "normal"; // tiny, normal, big, mega
-    let isDragging = false;
-    let dragOffsetX = 0;
-    let dragOffsetY = 0;
-    let idleTimer = null;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
 
-    function setNokoSize(state) {
-      noko.classList.remove("size-tiny", "size-normal", "size-big", "size-mega");
-      if (state === "tiny") noko.classList.add("size-tiny");
-      if (state === "normal") noko.classList.add("size-normal");
-      if (state === "big") noko.classList.add("size-big");
-      if (state === "mega") noko.classList.add("size-mega");
-      nokoSizeState = state;
+    let freq = 600;
+    if (type === "drag") freq = 700;
+    if (type === "drop") freq = 500;
+    if (type === "happy") freq = 800;
+    if (type === "excited") freq = 900;
+    if (type === "sleepy") freq = 300;
+    if (type === "shy") freq = 650;
+    if (type === "confused") freq = 450;
+    if (type === "cloakOn") freq = 350;
+    if (type === "cloakOff") freq = 750;
+    if (type === "banana") freq = 1000;
+    if (type === "games") freq = 950;
+    if (type === "help") freq = 550;
+    if (type === "sad") freq = 280;
+
+    osc.frequency.value = freq;
+    gain.gain.value = 0.12;
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.12);
+  }
+
+  /* ---------- Noko mascot logic ---------- */
+  const noko = document.getElementById("noko");
+  const nokoFace = document.getElementById("nokoFace");
+  let nokoSizeState = "normal";
+  let isDragging = false;
+  let dragOffsetX = 0;
+  let dragOffsetY = 0;
+  let idleTimer = null;
+
+  function setNokoSize(state) {
+    noko.classList.remove("size-tiny", "size-normal", "size-big", "size-mega");
+    if (state === "tiny") noko.classList.add("size-tiny");
+    if (state === "normal") noko.classList.add("size-normal");
+    if (state === "big") noko.classList.add("size-big");
+    if (state === "mega") noko.classList.add("size-mega");
+    nokoSizeState = state;
+  }
+
+  function setNokoExpression(type) {
+    if (type === "sleepy") {
+      nokoFace.textContent = "😴";
+      noko.classList.add("mascot-sleepy");
+    } else if (type === "excited") {
+      nokoFace.textContent = "🤩";
+      noko.classList.remove("mascot-sleepy");
+    } else if (type === "shy") {
+      nokoFace.textContent = "🥺";
+      noko.classList.remove("mascot-sleepy");
+    } else if (type === "confused") {
+      nokoFace.textContent = "😕";
+      noko.classList.remove("mascot-sleepy");
+    } else if (type === "happy") {
+      nokoFace.textContent = "🐒";
+      noko.classList.remove("mascot-sleepy");
+    } else {
+      nokoFace.textContent = "🐒";
+      noko.classList.remove("mascot-sleepy");
     }
+  }
 
-    function setNokoExpression(type) {
-      if (type === "sleepy") {
-        nokoFace.textContent = "😴";
-        noko.classList.add("mascot-sleepy");
-      } else if (type === "excited") {
-        nokoFace.textContent = "🤩";
-        noko.classList.remove("mascot-sleepy");
-      } else if (type === "shy") {
-        nokoFace.textContent = "🥺";
-        noko.classList.remove("mascot-sleepy");
-      } else if (type === "confused") {
-        nokoFace.textContent = "😕";
-        noko.classList.remove("mascot-sleepy");
-      } else if (type === "happy") {
-        nokoFace.textContent = "🐒";
-        noko.classList.remove("mascot-sleepy");
-      } else {
-        nokoFace.textContent = "🐒";
-        noko.classList.remove("mascot-sleepy");
-      }
-    }
+  function resetIdleTimer() {
+    if (idleTimer) clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+      setNokoSize("tiny");
+      setNokoExpression("sleepy");
+      playNokoSound("sleepy");
+    }, 30000);
+  }
 
-    function resetIdleTimer() {
-      if (idleTimer) clearTimeout(idleTimer);
-      idleTimer = setTimeout(() => {
-        setNokoSize("tiny");
-        setNokoExpression("sleepy");
-        playNokoSound("sleepy");
-      }, 30000);
-    }
+  // Dragging
+  noko.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    noko.classList.add("dragging");
+    setNokoSize("big");
+    setNokoExpression("excited");
+    playNokoSound("drag");
 
-    // Dragging
-    noko.addEventListener("mousedown", (e) => {
-      isDragging = true;
-      noko.classList.add("dragging");
-      setNokoSize("big");
-      setNokoExpression("excited");
-      playNokoSound("drag");
+    const rect = noko.getBoundingClientRect();
+    dragOffsetX = e.clientX - rect.left;
+    dragOffsetY = e.clientY - rect.top;
 
-      const rect = noko.getBoundingClientRect();
-      dragOffsetX = e.clientX - rect.left;
-      dragOffsetY = e.clientY - rect.top;
+    resetIdleTimer();
+  });
 
-      resetIdleTimer();
-    });
+  document.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+    const x = e.clientX - dragOffsetX;
+    const y = e.clientY - dragOffsetY;
 
-    document.addEventListener("mousemove", (e) => {
-      if (!isDragging) return;
-      const x = e.clientX - dragOffsetX;
-      const y = e.clientY - dragOffsetY;
+    noko.style.left = x + "px";
+    noko.style.top = y + "px";
 
+    localStorage.setItem("nokoPosX", x);
+    localStorage.setItem("nokoPosY", y);
+  });
+
+  document.addEventListener("mouseup", () => {
+    if (!isDragging) return;
+    isDragging = false;
+    noko.classList.remove("dragging");
+    setNokoSize("big");
+    setTimeout(() => setNokoSize("normal"), 250);
+    playNokoSound("drop");
+    setNokoExpression("happy");
+    resetIdleTimer();
+  });
+
+  // Restore position
+  window.addEventListener("load", () => {
+    const x = localStorage.getItem("nokoPosX");
+    const y = localStorage.getItem("nokoPosY");
+    if (x !== null && y !== null) {
       noko.style.left = x + "px";
       noko.style.top = y + "px";
+    }
+    resetIdleTimer();
+  });
 
-      localStorage.setItem("nokoPosX", x);
-      localStorage.setItem("nokoPosY", y);
-    });
+  // Reactions to typing
+  const queryInput = document.getElementById("query");
+  queryInput.addEventListener("input", () => {
+    const v = queryInput.value.toLowerCase();
+    resetIdleTimer();
 
-    document.addEventListener("mouseup", () => {
-      if (!isDragging) return;
-      isDragging = false;
-      noko.classList.remove("dragging");
+    if (v.includes("banana")) {
+      setNokoSize("mega");
+      setNokoExpression("excited");
+      playNokoSound("banana");
+      setTimeout(() => { setNokoSize("big"); setNokoExpression("happy"); }, 600);
+    } else if (v.includes("games")) {
       setNokoSize("big");
-      setTimeout(() => setNokoSize("normal"), 250);
-      playNokoSound("drop");
+      setNokoExpression("excited");
+      playNokoSound("games");
+    } else if (v.includes("school")) {
+      setNokoSize("normal");
+      setNokoExpression("confused");
+      playNokoSound("confused");
+    } else if (v.includes("help")) {
+      setNokoSize("big");
+      setNokoExpression("shy");
+      playNokoSound("help");
+    } else if (v.includes("sad")) {
+      setNokoSize("tiny");
+      setNokoExpression("shy");
+      playNokoSound("sad");
+    } else if (v.includes("monkey")) {
+      setNokoSize("big");
       setNokoExpression("happy");
-      resetIdleTimer();
-    });
+      playNokoSound("happy");
+    } else if (v.includes("shh") || v.includes("quiet")) {
+      setNokoSize("tiny");
+      setNokoExpression("shy");
+    } else {
+      setNokoSize("normal");
+      setNokoExpression("happy");
+    }
+  });  /* ---------- Noko chat logic (REAL AI) ---------- */
+  const nokoChat = document.getElementById("noko-chat");
+  const nokoChatLog = document.getElementById("noko-chat-log");
+  const nokoInput = document.getElementById("noko-input");
+  const nokoSend = document.getElementById("noko-send");
 
-    // Restore position
-    window.addEventListener("load", () => {
-      const x = localStorage.getItem("nokoPosX");
-      const y = localStorage.getItem("nokoPosY");
-      if (x !== null && y !== null) {
-        noko.style.left = x + "px";
-        noko.style.top = y + "px";
-      }
-      resetIdleTimer();
-    });
+  let nokoChatOpen = false;
 
-    // Reactions to typing
-    const queryInput = document.getElementById("query");
-    queryInput.addEventListener("input", () => {
-      const v = queryInput.value.toLowerCase();
-      resetIdleTimer();
+  function toggleNokoChat() {
+    if (isDragging) return;
 
-      if (v.includes("banana")) {
-        setNokoSize("mega");
-        setNokoExpression("excited");
-        playNokoSound("banana");
-        setTimeout(() => { setNokoSize("big"); setNokoExpression("happy"); }, 600);
-      } else if (v.includes("games")) {
-        setNokoSize("big");
-        setNokoExpression("excited");
-        playNokoSound("games");
-      } else if (v.includes("school")) {
-        setNokoSize("normal");
-        setNokoExpression("confused");
-        playNokoSound("confused");
-      } else if (v.includes("help")) {
-        setNokoSize("big");
-        setNokoExpression("shy");
-        playNokoSound("help");
-      } else if (v.includes("sad")) {
-        setNokoSize("tiny");
-        setNokoExpression("shy");
-        playNokoSound("sad");
-      } else if (v.includes("monkey")) {
-        setNokoSize("big");
-        setNokoExpression("happy");
-        playNokoSound("happy");
-      } else if (v.includes("shh") || v.includes("quiet")) {
-        setNokoSize("tiny");
-        setNokoExpression("shy");
+    nokoChatOpen = !nokoChatOpen;
+    if (nokoChatOpen) {
+      nokoChat.classList.add("open");
+      addNokoMessage("Hiii!! You clicked me! I’m awake and ready to cause chaos. 🐒✨");
+      nokoInput.focus();
+      playNokoSound("happy");
+    } else {
+      nokoChat.classList.remove("open");
+    }
+  }
+
+  noko.addEventListener("click", toggleNokoChat);
+  nokoSend.addEventListener("click", sendNokoMessage);
+  nokoInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") sendNokoMessage();
+  });
+
+  function addUserMessage(msg) {
+    const div = document.createElement("div");
+    div.className = "noko-msg you";
+    div.innerHTML = `<span>${escapeHtml(msg)}</span>`;
+    nokoChatLog.appendChild(div);
+    nokoChatLog.scrollTop = nokoChatLog.scrollHeight;
+  }
+
+  function addNokoMessage(msg) {
+    const div = document.createElement("div");
+    div.className = "noko-msg noko";
+    div.innerHTML = `<span>${escapeHtml(msg)}</span>`;
+    nokoChatLog.appendChild(div);
+    nokoChatLog.scrollTop = nokoChatLog.scrollHeight;
+  }
+
+  async function sendNokoMessage() {
+    const text = nokoInput.value.trim();
+    if (!text) return;
+
+    addUserMessage(text);
+    nokoInput.value = "";
+
+    addNokoMessage("…thinking…");
+
+    const reply = await fetchNokoAI(text);
+
+    // Remove the "thinking" message
+    nokoChatLog.removeChild(nokoChatLog.lastChild);
+
+    addNokoMessage(reply);
+  }
+
+  async function fetchNokoAI(userMessage) {
+    try {
+      const response = await fetch(OPENAI_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          messages: [
+            {
+              role: "system",
+              content: `
+You are Noko, a tiny glowing neon monkey who lives in the bottom-left corner of a website.
+Your personality:
+- playful, chaotic, dramatic, curious
+- speaks like an excited little monkey
+- reacts emotionally to bananas, games, fun, and attention
+- supportive and friendly
+- uses emojis often (especially 🐒🍌✨)
+- NEVER breaks character
+- NEVER says you are an AI model
+- You are a monkey mascot with a glowing green aura
+`
+            },
+            {
+              role: "user",
+              content: userMessage
+            }
+          ],
+          max_tokens: 150
+        })
+      });
+
+      const data = await response.json();
+
+      if (data?.choices?.[0]?.message?.content) {
+        return data.choices[0].message.content.trim();
       } else {
-        setNokoSize("normal");
-        setNokoExpression("happy");
+        return "Eeeek… something went wrong. My monkey brain is confused. 🐒";
       }
-    });
 
-    /* ---------- Noko chat logic ---------- */
-    const nokoChat = document.getElementById("noko-chat");
-    const nokoChatLog = document.getElementById("noko-chat-log");
-    const nokoInput = document.getElementById("noko-input");
-    const nokoSend = document.getElementById("noko-send");
-
-    let nokoChatOpen = false;
-
-    function toggleNokoChat() {
-      // Don’t toggle chat if we just dragged him
-      if (isDragging) return;
-
-      nokoChatOpen = !nokoChatOpen;
-      if (nokoChatOpen) {
-        nokoChat.classList.add("open");
-        addNokoMessage("Hiii, you clicked me! What’s going on in that brain of yours?");
-        nokoInput.focus();
-        playNokoSound("happy");
-      } else {
-        nokoChat.classList.remove("open");
-      }
+    } catch (err) {
+      return "Oops! My banana-powered brain tripped over a wire. 🍌⚡";
     }
+  }
 
-    noko.addEventListener("click", () => {
-      toggleNokoChat();
-    });
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
 
-    nokoSend.addEventListener("click", sendNokoMessage);
-    nokoInput.addEventListener("keydown", e => {
-      if (e.key === "Enter") sendNokoMessage();
-    });
+  /* ---------- Cloak mode ---------- */
+  const cloakDot = document.getElementById("cloakDot");
 
-    function sendNokoMessage() {
-      const text = nokoInput.value.trim();
-      if (!text) return;
-
-      addUserMessage(text);
-      nokoInput.value = "";
-
-      setTimeout(() => {
-        addNokoMessage(nokoReply(text));
-      }, 350);
+  function setCloak(active) {
+    if (active) {
+      document.documentElement.classList.add("cloak-active");
+      localStorage.setItem("cloakMode", "true");
+      setNokoSize("tiny");
+      setNokoExpression("shy");
+      noko.classList.add("mascot-hidden");
+      nokoChat.classList.remove("open");
+      nokoChatOpen = false;
+      playNokoSound("cloakOn");
+    } else {
+      document.documentElement.classList.remove("cloak-active");
+      localStorage.setItem("cloakMode", "false");
+      noko.classList.remove("mascot-hidden");
+      setNokoSize("normal");
+      setNokoExpression("happy");
+      playNokoSound("cloakOff");
     }
+  }
 
-    function addUserMessage(msg) {
-      const div = document.createElement("div");
-      div.className = "noko-msg you";
-      div.innerHTML = `<span>${escapeHtml(msg)}</span>`;
-      nokoChatLog.appendChild(div);
-      nokoChatLog.scrollTop = nokoChatLog.scrollHeight;
-    }
+  cloakDot.addEventListener("click", () => {
+    const isActive = document.documentElement.classList.contains("cloak-active");
+    setCloak(!isActive);
+  });
 
-    function addNokoMessage(msg) {
-      const div = document.createElement("div");
-      div.className = "noko-msg noko";
-      div.innerHTML = `<span>${escapeHtml(msg)}</span>`;
-      nokoChatLog.appendChild(div);
-      nokoChatLog.scrollTop = nokoChatLog.scrollHeight;
-    }
-
-    function nokoReply(text) {
-      const t = text.toLowerCase();
-
-      if (t.includes("hi") || t.includes("hello") || t.includes("hey"))
-        return "Heeey! I get so happy when you talk to me.";
-
-      if (t.includes("banana"))
-        return "BANANA DETECTED. I am now 300% more powerful. 🍌";
-
-      if (t.includes("sad") || t.includes("tired") || t.includes("down"))
-        return "Aww… imagine a tiny monkey hanging on your shoulder hyping you up. You’re not alone.";
-
-      if (t.includes("happy") || t.includes("good"))
-        return "Yesss, good vibes. I’m doing a little victory dance in the corner of your screen.";
-
-      if (t.includes("game") || t.includes("play"))
-        return "Games? Say less. I fully support this decision. What are we loading up?";
-
-      if (t.includes("help") || t.includes("stuck"))
-        return "Tell me what you’re stuck on. I’ll throw ideas like bananas until one sticks.";
-
-      if (t.includes("school") || t.includes("homework"))
-        return "School brain: overloaded. Monkey brain: also overloaded. But we can chip away at it together.";
-
-      if (t.includes("bored"))
-        return "Boredom detected. Maybe tweak your homepage, add more chaos, or open something fun from your tiles.";
-
-      if (t.includes("monkey"))
-        return "Yes. Correct. Monkey supremacy. 🐒";
-
-      return "Oooh, that’s interesting… tell me more so I can overreact like a dramatic monkey.";
-    }
-
-    function escapeHtml(str) {
-      return str
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-    }
-
-    /* ---------- Cloak mode ---------- */
-    const cloakDot = document.getElementById("cloakDot");
-
-    function setCloak(active) {
-      if (active) {
-        document.documentElement.classList.add("cloak-active");
-        localStorage.setItem("cloakMode", "true");
-        setNokoSize("tiny");
-        setNokoExpression("shy");
-        noko.classList.add("mascot-hidden");
-        nokoChat.classList.remove("open");
-        nokoChatOpen = false;
-        playNokoSound("cloakOn");
-      } else {
-        document.documentElement.classList.remove("cloak-active");
-        localStorage.setItem("cloakMode", "false");
-        noko.classList.remove("mascot-hidden");
-        setNokoSize("normal");
-        setNokoExpression("happy");
-        playNokoSound("cloakOff");
-      }
-    }
-
-    cloakDot.addEventListener("click", () => {
-      const isActive = document.documentElement.classList.contains("cloak-active");
-      setCloak(!isActive);
-    });
-
-    const savedCloak = localStorage.getItem("cloakMode") === "true";
-    setCloak(savedCloak);
-  </script>
+  const savedCloak = localStorage.getItem("cloakMode") === "true";
+  setCloak(savedCloak);
+</script>
 
 </body>
 </html>
