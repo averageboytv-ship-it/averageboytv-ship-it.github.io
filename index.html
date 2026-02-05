@@ -1,766 +1,867 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>NatureMonkey Browser</title>
-  <style>
-    * { box-sizing: border-box; }
+<meta charset="UTF-8">
+<title>NatureMonkey Browser</title>
+<style>
+* { box-sizing: border-box; }
 
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: Arial, sans-serif;
-      color: #e0f4ff;
-      overflow: hidden;
-      background: radial-gradient(circle at top, #06131f 0, #02030a 45%, #000000 100%);
-      transition: background 0.6s ease;
-    }
+body {
+margin: 0;
+height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: Arial, sans-serif;
+color: #e0f4ff;
+overflow: hidden;
+background: radial-gradient(circle at top, #06131f 0, #02030a 45%, #000000 100%);
+transition: background 0.6s ease;
+}
 
-    body.dark { background: #000000; }
-    body.forest { background: radial-gradient(circle at center, #001f0f, #000000 80%); }
+body.dark { background: #000000; }
+body.forest { background: radial-gradient(circle at center, #001f0f, #000000 80%); }
 
-    .orb, .orb2 {
-      position: fixed;
-      border-radius: 50%;
-      pointer-events: none;
-      filter: blur(4px);
-      z-index: 0;
-    }
+.orb, .orb2 {
+position: fixed;
+border-radius: 50%;
+pointer-events: none;
+filter: blur(4px);
+z-index: 0;
+}
 
-    .orb {
-      width: 420px;
-      height: 420px;
-      background: radial-gradient(circle, rgba(0,255,140,0.35), transparent 60%);
-      top: -80px;
-      left: -60px;
-      animation: orbFloat 16s ease-in-out infinite alternate;
-    }
+.orb {
+width: 420px;
+height: 420px;
+background: radial-gradient(circle, rgba(0,255,140,0.35), transparent 60%);
+top: -80px;
+left: -60px;
+animation: orbFloat 16s ease-in-out infinite alternate;
+}
 
-    .orb2 {
-      width: 380px;
-      height: 380px;
-      background: radial-gradient(circle, rgba(0,200,255,0.25), transparent 60%);
-      bottom: -60px;
-      right: -40px;
-      animation: orbFloat2 20s ease-in-out infinite alternate;
-    }
+.orb2 {
+width: 380px;
+height: 380px;
+background: radial-gradient(circle, rgba(0,200,255,0.25), transparent 60%);
+bottom: -60px;
+right: -40px;
+animation: orbFloat2 20s ease-in-out infinite alternate;
+}
 
-    @keyframes orbFloat {
-      0% { transform: translate(0,0); opacity: 0.7; }
-      100% { transform: translate(40px,60px); opacity: 1; }
-    }
+@keyframes orbFloat {
+0% { transform: translate(0,0); opacity: 0.7; }
+100% { transform: translate(40px,60px); opacity: 1; }
+}
 
-    @keyframes orbFloat2 {
-      0% { transform: translate(0,0); opacity: 0.6; }
-      100% { transform: translate(-40px,-40px); opacity: 1; }
-    }
+@keyframes orbFloat2 {
+0% { transform: translate(0,0); opacity: 0.6; }
+100% { transform: translate(-40px,-40px); opacity: 1; }
+}
 
-    .container {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      max-width: 800px;
-      width: 100%;
-      padding: 20px;
-    }
+.container {
+position: relative;
+z-index: 2;
+text-align: center;
+max-width: 800px;
+width: 100%;
+padding: 20px;
+}
 
-    .logo {
-      font-size: 64px;
-      font-weight: bold;
-      color: #00ff9c;
-      letter-spacing: 3px;
-      text-shadow: 0 0 20px #00ff9c, 0 0 40px #00ff9c;
-      animation: logoPulse 3s ease-in-out infinite;
-      font-family: "Trebuchet MS", sans-serif;
-    }
+.logo {
+font-size: 64px;
+font-weight: bold;
+color: #00ff9c;
+letter-spacing: 3px;
+text-shadow: 0 0 20px #00ff9c, 0 0 40px #00ff9c;
+animation: logoPulse 3s ease-in-out infinite;
+font-family: "Trebuchet MS", sans-serif;
+}
 
-    @keyframes logoPulse {
-      0%,100% { text-shadow: 0 0 20px #00ff9c, 0 0 40px #00ff9c; }
-      50% { text-shadow: 0 0 30px #00ff9c, 0 0 60px #00ff9c; }
-    }
+@keyframes logoPulse {
+0%,100% { text-shadow: 0 0 20px #00ff9c, 0 0 40px #00ff9c; }
+50% { text-shadow: 0 0 30px #00ff9c, 0 0 60px #00ff9c; }
+}
 
-    .tagline {
-      font-size: 15px;
-      color: #a9ffd8;
-      margin-bottom: 24px;
-      opacity: 0.9;
-    }
+.tagline {
+font-size: 15px;
+color: #a9ffd8;
+margin-bottom: 24px;
+opacity: 0.9;
+}
 
-    #query {
-      width: 70vw;
-      max-width: 560px;
-      padding: 12px 18px;
-      border-radius: 999px;
-      border: 2px solid #00ff9c;
-      background: rgba(2, 6, 23, 0.95);
-      color: #e0f4ff;
-      font-size: 16px;
-      outline: none;
-      box-shadow: 0 0 15px rgba(0,255,140,0.5);
-    }    .engine-buttons {
-      margin-top: 18px;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+#query {
+width: 70vw;
+max-width: 560px;
+padding: 12px 18px;
+border-radius: 999px;
+border: 2px solid #00ff9c;
+background: rgba(2, 6, 23, 0.95);
+color: #e0f4ff;
+font-size: 16px;
+outline: none;
+box-shadow: 0 0 15px rgba(0,255,140,0.5);
+}
 
-    button {
-      padding: 8px 16px;
-      border-radius: 999px;
-      border: 1px solid #00ff9c;
-      background: rgba(2, 6, 23, 0.9);
-      color: #e0f4ff;
-      font-size: 13px;
-      cursor: pointer;
-      text-shadow: 0 0 8px #00ff9c;
-      box-shadow: 0 0 12px rgba(0,255,140,0.7);
-      transition: 0.15s;
-    }
+.engine-buttons {
+margin-top: 18px;
+display: flex;
+justify-content: center;
+gap: 10px;
+flex-wrap: wrap;
+}
 
-    button:hover {
-      background: #00ff9c;
-      color: #020617;
-      transform: translateY(-1px);
-      box-shadow: 0 0 18px rgba(0,255,140,1);
-    }
+button {
+padding: 8px 16px;
+border-radius: 999px;
+border: 1px solid #00ff9c;
+background: rgba(2, 6, 23, 0.9);
+color: #e0f4ff;
+font-size: 13px;
+cursor: pointer;
+text-shadow: 0 0 8px #00ff9c;
+box-shadow: 0 0 12px rgba(0,255,140,0.7);
+transition: 0.15s;
+}
 
-    .tiles {
-      margin-top: 28px;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
+button:hover {
+background: #00ff9c;
+color: #020617;
+transform: translateY(-1px);
+box-shadow: 0 0 18px rgba(0,255,140,1);
+}
 
-    .tile {
-      width: 110px;
-      padding: 10px 8px;
-      border-radius: 14px;
-      background: rgba(3,10,35,0.9);
-      border: 1px solid rgba(0,255,140,0.4);
-      box-shadow: 0 0 12px rgba(0,255,140,0.35);
-      cursor: pointer;
-      transition: 0.15s;
-      font-size: 12px;
-      color: #d7ffe9;
-    }
+.tiles {
+margin-top: 28px;
+display: flex;
+justify-content: center;
+flex-wrap: wrap;
+gap: 14px;
+}
 
-    .tile:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 18px rgba(0,255,140,0.8);
-      border-color: #00ff9c;
-    }
+.tile {
+width: 110px;
+padding: 10px 8px;
+border-radius: 14px;
+background: rgba(3,10,35,0.9);
+border: 1px solid rgba(0,255,140,0.4);
+box-shadow: 0 0 12px rgba(0,255,140,0.35);
+cursor: pointer;
+transition: 0.15s;
+font-size: 12px;
+color: #d7ffe9;
+}
 
-    .tile-title {
-      font-weight: bold;
-      margin-bottom: 4px;
-      color: #00ffb3;
-      text-shadow: 0 0 8px #00ff9c;
-    }
+.tile:hover {
+transform: translateY(-2px);
+box-shadow: 0 0 18px rgba(0,255,140,0.8);
+border-color: #00ff9c;
+}
 
-    .settings-btn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: rgba(0,255,140,0.2);
-      border: 2px solid #00ff9c;
-      padding: 10px 14px;
-      border-radius: 10px;
-      cursor: pointer;
-      color: #00ffb3;
-      font-weight: bold;
-      text-shadow: 0 0 10px #00ff9c;
-      box-shadow: 0 0 15px rgba(0,255,140,0.5);
-      transition: 0.2s;
-      z-index: 10;
-    }
+.tile-title {
+font-weight: bold;
+margin-bottom: 4px;
+color: #00ffb3;
+text-shadow: 0 0 8px #00ff9c;
+}
 
-    .settings-btn:hover {
-      background: #00ff9c;
-      color: #000;
-    }
+.settings-btn {
+position: fixed;
+top: 20px;
+right: 20px;
+background: rgba(0,255,140,0.2);
+border: 2px solid #00ff9c;
+padding: 10px 14px;
+border-radius: 10px;
+cursor: pointer;
+color: #00ffb3;
+font-weight: bold;
+text-shadow: 0 0 10px #00ff9c;
+box-shadow: 0 0 15px rgba(0,255,140,0.5);
+transition: 0.2s;
+z-index: 10;
+}
 
-    .settings-panel {
-      position: fixed;
-      top: 0;
-      right: -350px;
-      width: 300px;
-      height: 100%;
-      background: rgba(0,0,0,0.85);
-      border-left: 2px solid #00ff9c;
-      padding: 20px;
-      box-shadow: -5px 0 20px rgba(0,255,140,0.4);
-      transition: right 0.4s ease;
-      z-index: 20;
-      color: #d7ffe9;
-    }
+.settings-btn:hover {
+background: #00ff9c;
+color: #000;
+}
 
-    .settings-panel.open { right: 0; }
+.settings-panel {
+position: fixed;
+top: 0;
+right: -350px;
+width: 300px;
+height: 100%;
+background: rgba(0,0,0,0.85);
+border-left: 2px solid #00ff9c;
+padding: 20px;
+box-shadow: -5px 0 20px rgba(0,255,140,0.4);
+transition: right 0.4s ease;
+z-index: 20;
+color: #d7ffe9;
+}
 
-    .settings-panel h2 {
-      color: #00ffb3;
-      text-shadow: 0 0 10px #00ff9c;
-      margin-bottom: 10px;
-    }
+.settings-panel.open { right: 0; }
 
-    .settings-panel label {
-      display: block;
-      margin: 10px 0 5px;
-      font-size: 14px;
-    }
+.settings-panel h2 {
+color: #00ffb3;
+text-shadow: 0 0 10px #00ff9c;
+margin-bottom: 10px;
+}
 
-    .reset-btn {
-      margin-top: 20px;
-      width: 100%;
-      padding: 10px;
-      background: #ff4d4d;
-      border: none;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-  </style>
+.settings-panel label {
+display: block;
+margin: 10px 0 5px;
+font-size: 14px;
+}
+
+.reset-btn {
+margin-top: 20px;
+width: 100%;
+padding: 10px;
+background: #ff4d4d;
+border: none;
+color: white;
+border-radius: 8px;
+cursor: pointer;
+font-weight: bold;
+}
+
+/* Noko mascot (AI monkey) */
+.mascot {
+position: fixed;
+bottom: 20px;
+left: 20px;
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 15;
+cursor: grab;
+user-select: none;
+transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.mascot.dragging {
+cursor: grabbing;
+filter: drop-shadow(0 0 18px #00ff9c);
+}
+
+.mascot-core {
+position: relative;
+border-radius: 50%;
+background: radial-gradient(circle at 30% 30%, #ffe9c4, #f4b36b);
+box-shadow: 0 0 18px rgba(0,255,140,0.7);
+display: flex;
+align-items: center;
+justify-content: center;
+overflow: visible;
+}
+
+.mascot-face {
+font-size: 32px;
+pointer-events: none;
+}
+
+.mascot-glow {
+position: absolute;
+width: 120%;
+height: 120%;
+border-radius: 50%;
+background: radial-gradient(circle, rgba(0,255,140,0.4), transparent 70%);
+animation: mascotPulse 2.5s ease-in-out infinite;
+z-index: -1;
+}
+
+.mascot-tail {
+position: absolute;
+right: -18px;
+bottom: 8px;
+width: 26px;
+height: 26px;
+border-radius: 50%;
+border: 4px solid #f4b36b;
+border-left-color: transparent;
+border-top-color: transparent;
+transform-origin: left center;
+animation: tailWiggle 3s ease-in-out infinite;
+}
+
+@keyframes mascotPulse {
+0%,100% { opacity: 0.6; transform: scale(1); }
+50% { opacity: 1; transform: scale(1.15); }
+}
+
+@keyframes tailWiggle {
+0%,100% { transform: rotate(10deg); }
+50% { transform: rotate(-10deg); }
+}
+
+@keyframes mascotFloat {
+0%,100% { transform: translateY(0); }
+50% { transform: translateY(-6px); }
+}
+
+.mascot-floating {
+animation: mascotFloat 3s ease-in-out infinite;
+}
+
+/* Size states */
+.size-tiny .mascot-core { width: 40px; height: 40px; }
+.size-tiny .mascot-face { font-size: 20px; }
+.size-normal .mascot-core { width: 80px; height: 80px; }
+.size-normal .mascot-face { font-size: 32px; }
+.size-big .mascot-core { width: 120px; height: 120px; }
+.size-big .mascot-face { font-size: 44px; }
+.size-mega .mascot-core { width: 160px; height: 160px; }
+.size-mega .mascot-face { font-size: 56px; }
+
+.mascot-sleepy .mascot-face { filter: brightness(0.8); }
+.mascot-hidden { opacity: 0; pointer-events: none; }
+
+/* Hidden cloak dot */
+.cloak-dot {
+position: fixed;
+top: 4px;
+left: 4px;
+width: 10px;
+height: 10px;
+border-radius: 50%;
+background: transparent;
+cursor: pointer;
+z-index: 30;
+}
+
+.cloak-dot:hover {
+background: rgba(255,255,255,0.1);
+}
+
+/* CLOAK MODE: fake learning site */
+.cloak-wrapper {
+display: none;
+position: relative;
+z-index: 2;
+max-width: 900px;
+width: 100%;
+padding: 20px;
+font-family: system-ui, sans-serif;
+color: #222;
+}
+
+.cloak-active .container,
+.cloak-active .settings-btn,
+.cloak-active .orb,
+.cloak-active .orb2 {
+display: none !important;
+}
+
+.cloak-active .cloak-wrapper {
+display: block;
+}
+
+.cloak-active body {
+background: #f4f5f7 !important;
+}
+
+.cloak-card {
+background: #ffffff;
+border-radius: 10px;
+padding: 16px 18px;
+margin-bottom: 14px;
+box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.cloak-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 16px;
+}
+
+.cloak-title {
+font-size: 22px;
+font-weight: 600;
+color: #1f2933;
+}
+
+.cloak-sub {
+font-size: 13px;
+color: #6b7280;
+}
+
+.cloak-badge {
+font-size: 11px;
+padding: 4px 8px;
+border-radius: 999px;
+background: #e5f2ff;
+color: #2563eb;
+font-weight: 600;
+}
+
+.cloak-table {
+width: 100%;
+border-collapse: collapse;
+font-size: 13px;
+margin-top: 6px;
+}
+
+.cloak-table th,
+.cloak-table td {
+padding: 6px 4px;
+text-align: left;
+border-bottom: 1px solid #e5e7eb;
+}
+
+.cloak-table th {
+font-weight: 600;
+color: #4b5563;
+}
+
+.cloak-tag {
+font-size: 11px;
+padding: 2px 6px;
+border-radius: 999px;
+background: #ecfdf3;
+color: #166534;
+display: inline-block;
+}
+
+.cloak-input {
+width: 100%;
+padding: 8px 10px;
+border-radius: 6px;
+border: 1px solid #d1d5db;
+font-size: 13px;
+margin-top: 4px;
+}
+
+.cloak-small {
+font-size: 11px;
+color: #6b7280;
+margin-top: 4px;
+}
+
+/* Simple toggle in settings for sound (label only, logic in JS) */
+.settings-panel .inline {
+display: flex;
+align-items: center;
+gap: 6px;
+}
+</style>
 </head>
 <body>
 
-  <div class="orb"></div>
-  <div class="orb2"></div>
-
-  <div class="settings-btn" onclick="toggleSettings()">⚙ Settings</div>
-
-  <div class="settings-panel" id="settingsPanel">
-    <h2>Settings</h2>
-
-    <label>Theme:</label>
-    <select id="themeSelect" onchange="applyTheme()">
-      <option value="neon">Neon</option>
-      <option value="dark">Dark</option>
-      <option value="forest">Forest</option>
-    </select>
-
-    <label>Show Quick Tiles:</label>
-    <input type="checkbox" id="toggleTiles" checked onchange="toggleTilesFunc()">
-
-    <label>Default Search Engine:</label>
-    <select id="defaultEngine" onchange="saveSettings()">
-      <option value="google">Google</option>
-      <option value="bing">Bing</option>
-      <option value="duckduckgo">DuckDuckGo</option>
-    </select>
-
-    <label class="inline">
-      <input type="checkbox" id="nokoSoundToggle" checked onchange="saveSettings()">
-      Noko sound effects
-    </label>
-
-    <button class="reset-btn" onclick="resetSettings()">Reset Settings</button>
-  </div>
-
-  <div class="container" id="nmContainer">
-    <div class="logo">NatureMonkey</div>
-    <div class="tagline">A clean, neon-powered start to your web.</div>
-
-    <input type="text" id="query" placeholder="Search the web...">
-
-    <div class="engine-buttons">
-      <button onclick="search('google')">Google</button>
-      <button onclick="search('bing')">Bing</button>
-      <button onclick="search('duckduckgo')">DuckDuckGo</button>
-      <button onclick="search('youtube')">YouTube</button>
-      <button onclick="search('wikipedia')">Wikipedia</button>
-    </div>
-
-    <div class="tiles" id="tiles">
-      <div class="tile" onclick="openLink('https://www.youtube.com')">
-        <div class="tile-title">YouTube</div>
-        Videos & music
-      </div>
-      <div class="tile" onclick="openLink('https://discord.com/app')">
-        <div class="tile-title">Discord</div>
-        Chat & servers
-      </div>
-      <div class="tile" onclick="openLink('https://www.roblox.com')">
-        <div class="tile-title">Roblox</div>
-        Games & fun
-      </div>
-      <div class="tile" onclick="openLink('https://mail.google.com')">
-        <div class="tile-title">Gmail</div>
-        Email
-      </div>
-      <div class="tile" onclick="openLink('https://github.com')">
-        <div class="tile-title">GitHub</div>
-        Code & projects
-      </div>
-    </div>
-  </div>  <!-- Noko AI Monkey (draggable) -->
-  <div class="mascot size-normal mascot-floating" id="noko">
-    <div class="mascot-core">
-      <div class="mascot-glow"></div>
-      <div class="mascot-face" id="nokoFace">🐒</div>
-      <div class="mascot-tail"></div>
-    </div>
-  </div>
-
-  <!-- Noko chat box -->
-  <div id="noko-chat">
-    <div id="noko-chat-header">Noko • AI Monkey</div>
-    <div id="noko-chat-log"></div>
-    <div id="noko-chat-input">
-      <input id="noko-input" type="text" placeholder="Talk to Noko...">
-      <button id="noko-send">Send</button>
-    </div>
-  </div>
-
-  <!-- Hidden cloak dot -->
-  <div class="cloak-dot" id="cloakDot"></div>
-
-  <!-- Cloak mode fake learning hub -->
-  <div class="cloak-wrapper" id="cloakWrapper">
-    <div class="cloak-card cloak-header">
-      <div>
-        <div class="cloak-title">School Learning Hub</div>
-        <div class="cloak-sub">Today’s overview • Study planner & assignments</div>
-      </div>
-      <div class="cloak-badge">Student Portal</div>
-    </div>
-
-    <div class="cloak-card">
-      <strong>Upcoming Assignments</strong>
-      <table class="cloak-table">
-        <tr>
-          <th>Class</th><th>Task</th><th>Due</th><th>Status</th>
-        </tr>
-        <tr>
-          <td>Math</td><td>Practice worksheet</td><td>Tomorrow</td><td><span class="cloak-tag">In progress</span></td>
-        </tr>
-        <tr>
-          <td>Science</td><td>Chapter 4 reading</td><td>Friday</td><td>Not started</td>
-        </tr>
-        <tr>
-          <td>English</td><td>Essay outline</td><td>Next week</td><td>Not started</td>
-        </tr>
-      </table>
-    </div>
-
-    <div class="cloak-card">
-      <strong>Study Notes</strong>
-      <input class="cloak-input" placeholder="Type quick notes about what you’re studying...">
-      <div class="cloak-small">Notes are local to this device.</div>
-    </div>
-
-    <div class="cloak-card">
-      <strong>Reading Time Tracker</strong>
-      <div class="cloak-small">Today’s goal: 20 minutes of focused reading.</div>
-      <input class="cloak-input" placeholder="Book / topic you’re reading...">
-    </div>
-  </div><script>
-  /* ---------- OPENAI KEY (SET THIS IN PART 5) ---------- */
-  const OPENAI_API_KEY = "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"; 
-  const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
-
-  /* ---------- Search + settings ---------- */
-  function search(engine) {
-    const q = document.getElementById('query').value.trim();
-    if (!q) return;
-
-    let url = '';
-    if (engine === 'google') url = 'https://www.google.com/search?q=' + encodeURIComponent(q);
-    if (engine === 'bing') url = 'https://www.bing.com/search?q=' + encodeURIComponent(q);
-    if (engine === 'duckduckgo') url = 'https://duckduckgo.com/?q=' + encodeURIComponent(q);
-    if (engine === 'youtube') url = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q);
-    if (engine === 'wikipedia') url = 'https://en.wikipedia.org/wiki/Special:Search?search=' + encodeURIComponent(q);
-
-    window.location.href = url;
-  }
-
-  document.getElementById('query').addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-      const def = localStorage.getItem("defaultEngine") || "google";
-      search(def);
-    }
-  });
-
-  function openLink(url) { window.location.href = url; }
-
-  function toggleSettings() {
-    const panel = document.getElementById("settingsPanel");
-    panel.classList.toggle("open");
-  }
-
-  document.addEventListener("click", function(e) {
-    const panel = document.getElementById("settingsPanel");
-    const btn = document.querySelector(".settings-btn");
-    if (!panel.contains(e.target) && !btn.contains(e.target)) {
-      panel.classList.remove("open");
-    }
-  });
-
-  function applyTheme() {
-    const theme = document.getElementById("themeSelect").value;
-    document.body.className = theme === "neon" ? "" : theme;
-    saveSettings();
-  }
-
-  function toggleTilesFunc() {
-    const show = document.getElementById("toggleTiles").checked;
-    document.getElementById("tiles").style.display = show ? "flex" : "none";
-    saveSettings();
-  }
-
-  function saveSettings() {
-    localStorage.setItem("theme", document.getElementById("themeSelect").value);
-    localStorage.setItem("showTiles", document.getElementById("toggleTiles").checked);
-    localStorage.setItem("defaultEngine", document.getElementById("defaultEngine").value);
-    localStorage.setItem("nokoSound", document.getElementById("nokoSoundToggle").checked);
-  }
-
-  function loadSettings() {
-    const theme = localStorage.getItem("theme") || "neon";
-    const showTiles = localStorage.getItem("showTiles") !== "false";
-    const def = localStorage.getItem("defaultEngine") || "google";
-    const nokoSound = localStorage.getItem("nokoSound") !== "false";
-
-    document.getElementById("themeSelect").value = theme;
-    document.getElementById("defaultEngine").value = def;
-    document.getElementById("toggleTiles").checked = showTiles;
-    document.getElementById("nokoSoundToggle").checked = nokoSound;
-
-    applyTheme();
-    toggleTilesFunc();
-  }
-
-  function resetSettings() {
-    localStorage.clear();
-    loadSettings();
-  }
-
-  loadSettings();
-
-  /* ---------- Noko sound engine ---------- */
-  let audioCtx = null;
-  function playNokoSound(type) {
-    const soundEnabled = document.getElementById("nokoSoundToggle").checked;
-    if (!soundEnabled) return;
-
-    if (!audioCtx) {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-
-    let freq = 600;
-    if (type === "drag") freq = 700;
-    if (type === "drop") freq = 500;
-    if (type === "happy") freq = 800;
-    if (type === "excited") freq = 900;
-    if (type === "sleepy") freq = 300;
-    if (type === "shy") freq = 650;
-    if (type === "confused") freq = 450;
-    if (type === "cloakOn") freq = 350;
-    if (type === "cloakOff") freq = 750;
-    if (type === "banana") freq = 1000;
-    if (type === "games") freq = 950;
-    if (type === "help") freq = 550;
-    if (type === "sad") freq = 280;
-
-    osc.frequency.value = freq;
-    gain.gain.value = 0.12;
-
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.12);
-  }
-
-  /* ---------- Noko mascot logic ---------- */
-  const noko = document.getElementById("noko");
-  const nokoFace = document.getElementById("nokoFace");
-  let nokoSizeState = "normal";
-  let isDragging = false;
-  let dragOffsetX = 0;
-  let dragOffsetY = 0;
-  let idleTimer = null;
-
-  function setNokoSize(state) {
-    noko.classList.remove("size-tiny", "size-normal", "size-big", "size-mega");
-    if (state === "tiny") noko.classList.add("size-tiny");
-    if (state === "normal") noko.classList.add("size-normal");
-    if (state === "big") noko.classList.add("size-big");
-    if (state === "mega") noko.classList.add("size-mega");
-    nokoSizeState = state;
-  }
-
-  function setNokoExpression(type) {
-    if (type === "sleepy") {
-      nokoFace.textContent = "😴";
-      noko.classList.add("mascot-sleepy");
-    } else if (type === "excited") {
-      nokoFace.textContent = "🤩";
-      noko.classList.remove("mascot-sleepy");
-    } else if (type === "shy") {
-      nokoFace.textContent = "🥺";
-      noko.classList.remove("mascot-sleepy");
-    } else if (type === "confused") {
-      nokoFace.textContent = "😕";
-      noko.classList.remove("mascot-sleepy");
-    } else if (type === "happy") {
-      nokoFace.textContent = "🐒";
-      noko.classList.remove("mascot-sleepy");
-    } else {
-      nokoFace.textContent = "🐒";
-      noko.classList.remove("mascot-sleepy");
-    }
-  }
-
-  function resetIdleTimer() {
-    if (idleTimer) clearTimeout(idleTimer);
-    idleTimer = setTimeout(() => {
-      setNokoSize("tiny");
-      setNokoExpression("sleepy");
-      playNokoSound("sleepy");
-    }, 30000);
-  }
-
-  // Dragging
-  noko.addEventListener("mousedown", (e) => {
-    isDragging = true;
-    noko.classList.add("dragging");
-    setNokoSize("big");
-    setNokoExpression("excited");
-    playNokoSound("drag");
-
-    const rect = noko.getBoundingClientRect();
-    dragOffsetX = e.clientX - rect.left;
-    dragOffsetY = e.clientY - rect.top;
-
-    resetIdleTimer();
-  });
-
-  document.addEventListener("mousemove", (e) => {
-    if (!isDragging) return;
-    const x = e.clientX - dragOffsetX;
-    const y = e.clientY - dragOffsetY;
-
-    noko.style.left = x + "px";
-    noko.style.top = y + "px";
-
-    localStorage.setItem("nokoPosX", x);
-    localStorage.setItem("nokoPosY", y);
-  });
-
-  document.addEventListener("mouseup", () => {
-    if (!isDragging) return;
-    isDragging = false;
-    noko.classList.remove("dragging");
-    setNokoSize("big");
-    setTimeout(() => setNokoSize("normal"), 250);
-    playNokoSound("drop");
-    setNokoExpression("happy");
-    resetIdleTimer();
-  });
-
-  // Restore position
-  window.addEventListener("load", () => {
-    const x = localStorage.getItem("nokoPosX");
-    const y = localStorage.getItem("nokoPosY");
-    if (x !== null && y !== null) {
-      noko.style.left = x + "px";
-      noko.style.top = y + "px";
-    }
-    resetIdleTimer();
-  });
-
-  // Reactions to typing
-  const queryInput = document.getElementById("query");
-  queryInput.addEventListener("input", () => {
-    const v = queryInput.value.toLowerCase();
-    resetIdleTimer();
-
-    if (v.includes("banana")) {
-      setNokoSize("mega");
-      setNokoExpression("excited");
-      playNokoSound("banana");
-      setTimeout(() => { setNokoSize("big"); setNokoExpression("happy"); }, 600);
-    } else if (v.includes("games")) {
-      setNokoSize("big");
-      setNokoExpression("excited");
-      playNokoSound("games");
-    } else if (v.includes("school")) {
-      setNokoSize("normal");
-      setNokoExpression("confused");
-      playNokoSound("confused");
-    } else if (v.includes("help")) {
-      setNokoSize("big");
-      setNokoExpression("shy");
-      playNokoSound("help");
-    } else if (v.includes("sad")) {
-      setNokoSize("tiny");
-      setNokoExpression("shy");
-      playNokoSound("sad");
-    } else if (v.includes("monkey")) {
-      setNokoSize("big");
-      setNokoExpression("happy");
-      playNokoSound("happy");
-    } else if (v.includes("shh") || v.includes("quiet")) {
-      setNokoSize("tiny");
-      setNokoExpression("shy");
-    } else {
-      setNokoSize("normal");
-      setNokoExpression("happy");
-    }
-  });  /* ---------- Noko chat logic (REAL AI) ---------- */
-  const nokoChat = document.getElementById("noko-chat");
-  const nokoChatLog = document.getElementById("noko-chat-log");
-  const nokoInput = document.getElementById("noko-input");
-  const nokoSend = document.getElementById("noko-send");
-
-  let nokoChatOpen = false;
-
-  function toggleNokoChat() {
-    if (isDragging) return;
-
-    nokoChatOpen = !nokoChatOpen;
-    if (nokoChatOpen) {
-      nokoChat.classList.add("open");
-      addNokoMessage("Hiii!! You clicked me! I’m awake and ready to cause chaos. 🐒✨");
-      nokoInput.focus();
-      playNokoSound("happy");
-    } else {
-      nokoChat.classList.remove("open");
-    }
-  }
-
-  noko.addEventListener("click", toggleNokoChat);
-  nokoSend.addEventListener("click", sendNokoMessage);
-  nokoInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") sendNokoMessage();
-  });
-
-  function addUserMessage(msg) {
-    const div = document.createElement("div");
-    div.className = "noko-msg you";
-    div.innerHTML = `<span>${escapeHtml(msg)}</span>`;
-    nokoChatLog.appendChild(div);
-    nokoChatLog.scrollTop = nokoChatLog.scrollHeight;
-  }
-
-  function addNokoMessage(msg) {
-    const div = document.createElement("div");
-    div.className = "noko-msg noko";
-    div.innerHTML = `<span>${escapeHtml(msg)}</span>`;
-    nokoChatLog.appendChild(div);
-    nokoChatLog.scrollTop = nokoChatLog.scrollHeight;
-  }
-
-  async function sendNokoMessage() {
-    const text = nokoInput.value.trim();
-    if (!text) return;
-
-    addUserMessage(text);
-    nokoInput.value = "";
-
-    addNokoMessage("…thinking…");
-
-    const reply = await fetchNokoAI(text);
-
-    // Remove the "thinking" message
-    nokoChatLog.removeChild(nokoChatLog.lastChild);
-
-    addNokoMessage(reply);
-  }
-
-  async function fetchNokoAI(userMessage) {
-    try {
-      const response = await fetch(OPENAI_API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${OPENAI_API_KEY}`
-        },
-        body: JSON.stringify({
-          model: "gpt-4o-mini",
-          messages: [
-            {
-              role: "system",
-              content: `
-You are Noko, a tiny glowing neon monkey who lives in the bottom-left corner of a website.
-Your personality:
-- playful, chaotic, dramatic, curious
-- speaks like an excited little monkey
-- reacts emotionally to bananas, games, fun, and attention
-- supportive and friendly
-- uses emojis often (especially 🐒🍌✨)
-- NEVER breaks character
-- NEVER says you are an AI model
-- You are a monkey mascot with a glowing green aura
-`
-            },
-            {
-              role: "user",
-              content: userMessage
-            }
-          ],
-          max_tokens: 150
-        })
-      });
-
-      const data = await response.json();
-
-      if (data?.choices?.[0]?.message?.content) {
-        return data.choices[0].message.content.trim();
-      } else {
-        return "Eeeek… something went wrong. My monkey brain is confused. 🐒";
-      }
-
-    } catch (err) {
-      return "Oops! My banana-powered brain tripped over a wire. 🍌⚡";
-    }
-  }
-
-  function escapeHtml(str) {
-    return str
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
-  }
-
-  /* ---------- Cloak mode ---------- */
-  const cloakDot = document.getElementById("cloakDot");
-
-  function setCloak(active) {
-    if (active) {
-      document.documentElement.classList.add("cloak-active");
-      localStorage.setItem("cloakMode", "true");
-      setNokoSize("tiny");
-      setNokoExpression("shy");
-      noko.classList.add("mascot-hidden");
-      nokoChat.classList.remove("open");
-      nokoChatOpen = false;
-      playNokoSound("cloakOn");
-    } else {
-      document.documentElement.classList.remove("cloak-active");
-      localStorage.setItem("cloakMode", "false");
-      noko.classList.remove("mascot-hidden");
-      setNokoSize("normal");
-      setNokoExpression("happy");
-      playNokoSound("cloakOff");
-    }
-  }
-
-  cloakDot.addEventListener("click", () => {
-    const isActive = document.documentElement.classList.contains("cloak-active");
-    setCloak(!isActive);
-  });
-
-  const savedCloak = localStorage.getItem("cloakMode") === "true";
-  setCloak(savedCloak);
+<div class="orb"></div>
+<div class="orb2"></div>
+
+<div class="settings-btn" onclick="toggleSettings()">⚙ Settings</div>
+
+<div class="settings-panel" id="settingsPanel">
+<h2>Settings</h2>
+
+<label>Theme:</label>
+<select id="themeSelect" onchange="applyTheme()">
+<option value="neon">Neon</option>
+<option value="dark">Dark</option>
+<option value="forest">Forest</option>
+</select>
+
+<label>Show Quick Tiles:</label>
+<input type="checkbox" id="toggleTiles" checked onchange="toggleTilesFunc()">
+
+<label>Default Search Engine:</label>
+<select id="defaultEngine" onchange="saveSettings()">
+<option value="google">Google</option>
+<option value="bing">Bing</option>
+<option value="duckduckgo">DuckDuckGo</option>
+</select>
+
+<label class="inline">
+<input type="checkbox" id="nokoSoundToggle" checked onchange="saveSettings()">
+Noko sound effects
+</label>
+
+<button class="reset-btn" onclick="resetSettings()">Reset Settings</button>
+</div>
+
+<div class="container" id="nmContainer">
+<div class="logo">NatureMonkey</div>
+<div class="tagline">A clean, neon-powered start to your web.</div>
+
+<input type="text" id="query" placeholder="Search the web...">
+
+<div class="engine-buttons">
+<button onclick="search('google')">Google</button>
+<button onclick="search('bing')">Bing</button>
+<button onclick="search('duckduckgo')">DuckDuckGo</button>
+<button onclick="search('youtube')">YouTube</button>
+<button onclick="search('wikipedia')">Wikipedia</button>
+</div>
+
+<div class="tiles" id="tiles">
+<div class="tile" onclick="openLink('https://www.youtube.com')">
+<div class="tile-title">YouTube</div>
+Videos & music
+</div>
+<div class="tile" onclick="openLink('https://discord.com/app')">
+<div class="tile-title">Discord</div>
+Chat & servers
+</div>
+<div class="tile" onclick="openLink('https://www.roblox.com')">
+<div class="tile-title">Roblox</div>
+Games & fun
+</div>
+<div class="tile" onclick="openLink('https://mail.google.com')">
+<div class="tile-title">Gmail</div>
+Email
+</div>
+<div class="tile" onclick="openLink('https://github.com')">
+<div class="tile-title">GitHub</div>
+Code & projects
+</div>
+</div>
+</div>
+
+<!-- Noko AI Monkey (draggable) -->
+<div class="mascot size-normal mascot-floating" id="noko">
+<div class="mascot-core">
+<div class="mascot-glow"></div>
+<div class="mascot-face" id="nokoFace">🐒</div>
+<div class="mascot-tail"></div>
+</div>
+</div>
+
+<!-- Hidden cloak dot -->
+<div class="cloak-dot" id="cloakDot"></div>
+
+<!-- Cloak mode fake learning hub -->
+<div class="cloak-wrapper" id="cloakWrapper">
+<div class="cloak-card cloak-header">
+<div>
+<div class="cloak-title">School Learning Hub</div>
+<div class="cloak-sub">Today’s overview • Study planner & assignments</div>
+</div>
+<div class="cloak-badge">Student Portal</div>
+</div>
+
+<div class="cloak-card">
+<strong>Upcoming Assignments</strong>
+<table class="cloak-table">
+<tr>
+<th>Class</th><th>Task</th><th>Due</th><th>Status</th>
+</tr>
+<tr>
+<td>Math</td><td>Practice worksheet</td><td>Tomorrow</td><td><span class="cloak-tag">In progress</span></td>
+</tr>
+<tr>
+<td>Science</td><td>Chapter 4 reading</td><td>Friday</td><td>Not started</td>
+</tr>
+<tr>
+<td>English</td><td>Essay outline</td><td>Next week</td><td>Not started</td>
+</tr>
+</table>
+</div>
+
+<div class="cloak-card">
+<strong>Study Notes</strong>
+<input class="cloak-input" placeholder="Type quick notes about what you’re studying...">
+<div class="cloak-small">Notes are local to this device.</div>
+</div>
+
+<div class="cloak-card">
+<strong>Reading Time Tracker</strong>
+<div class="cloak-small">Today’s goal: 20 minutes of focused reading.</div>
+<input class="cloak-input" placeholder="Book / topic you’re reading...">
+</div>
+</div>
+
+<script>
+/* ---------- Search + settings ---------- */
+function search(engine) {
+const q = document.getElementById('query').value.trim();
+if (!q) return;
+
+let url = '';
+if (engine === 'google') url = 'https://www.google.com/search?q=' + encodeURIComponent(q);
+if (engine === 'bing') url = 'https://www.bing.com/search?q=' + encodeURIComponent(q);
+if (engine === 'duckduckgo') url = 'https://duckduckgo.com/?q=' + encodeURIComponent(q);
+if (engine === 'youtube') url = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q);
+if (engine === 'wikipedia') url = 'https://en.wikipedia.org/wiki/Special:Search?search=' + encodeURIComponent(q);
+
+window.location.href = url;
+}
+
+document.getElementById('query').addEventListener('keydown', e => {
+if (e.key === 'Enter') {
+const def = localStorage.getItem("defaultEngine") || "google";
+search(def);
+}
+});
+
+function openLink(url) { window.location.href = url; }
+
+function toggleSettings() {
+const panel = document.getElementById("settingsPanel");
+panel.classList.toggle("open");
+}
+
+document.addEventListener("click", function(e) {
+const panel = document.getElementById("settingsPanel");
+const btn = document.querySelector(".settings-btn");
+if (!panel.contains(e.target) && !btn.contains(e.target)) {
+panel.classList.remove("open");
+}
+});
+
+function applyTheme() {
+const theme = document.getElementById("themeSelect").value;
+document.body.className = theme === "neon" ? "" : theme;
+saveSettings();
+}
+
+function toggleTilesFunc() {
+const show = document.getElementById("toggleTiles").checked;
+document.getElementById("tiles").style.display = show ? "flex" : "none";
+saveSettings();
+}
+
+function saveSettings() {
+localStorage.setItem("theme", document.getElementById("themeSelect").value);
+localStorage.setItem("showTiles", document.getElementById("toggleTiles").checked);
+localStorage.setItem("defaultEngine", document.getElementById("defaultEngine").value);
+localStorage.setItem("nokoSound", document.getElementById("nokoSoundToggle").checked);
+}
+
+function loadSettings() {
+const theme = localStorage.getItem("theme") || "neon";
+const showTiles = localStorage.getItem("showTiles") !== "false";
+const def = localStorage.getItem("defaultEngine") || "google";
+const nokoSound = localStorage.getItem("nokoSound") !== "false";
+
+document.getElementById("themeSelect").value = theme;
+document.getElementById("defaultEngine").value = def;
+document.getElementById("toggleTiles").checked = showTiles;
+document.getElementById("nokoSoundToggle").checked = nokoSound;
+
+applyTheme();
+toggleTilesFunc();
+}
+
+function resetSettings() {
+localStorage.clear();
+loadSettings();
+}
+
+loadSettings();
+
+/* ---------- Noko sound engine (simple beeps) ---------- */
+let audioCtx = null;
+function playNokoSound(type) {
+const soundEnabled = document.getElementById("nokoSoundToggle").checked;
+if (!soundEnabled) return;
+
+if (!audioCtx) {
+audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+
+const osc = audioCtx.createOscillator();
+const gain = audioCtx.createGain();
+
+let freq = 600;
+if (type === "drag") freq = 700;
+if (type === "drop") freq = 500;
+if (type === "happy") freq = 800;
+if (type === "excited") freq = 900;
+if (type === "sleepy") freq = 300;
+if (type === "shy") freq = 650;
+if (type === "confused") freq = 450;
+if (type === "cloakOn") freq = 350;
+if (type === "cloakOff") freq = 750;
+if (type === "banana") freq = 1000;
+if (type === "games") freq = 950;
+if (type === "help") freq = 550;
+if (type === "sad") freq = 280;
+
+osc.frequency.value = freq;
+gain.gain.value = 0.12;
+
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+
+osc.start();
+osc.stop(audioCtx.currentTime + 0.12);
+}
+
+/* ---------- Noko AI monkey logic ---------- */
+const noko = document.getElementById("noko");
+const nokoFace = document.getElementById("nokoFace");
+let nokoSizeState = "normal"; // tiny, normal, big, mega
+let isDragging = false;
+let dragOffsetX = 0;
+let dragOffsetY = 0;
+let idleTimer = null;
+
+function setNokoSize(state) {
+noko.classList.remove("size-tiny", "size-normal", "size-big", "size-mega");
+if (state === "tiny") noko.classList.add("size-tiny");
+if (state === "normal") noko.classList.add("size-normal");
+if (state === "big") noko.classList.add("size-big");
+if (state === "mega") noko.classList.add("size-mega");
+nokoSizeState = state;
+}
+
+function setNokoExpression(type) {
+if (type === "sleepy") {
+nokoFace.textContent = "😴";
+noko.classList.add("mascot-sleepy");
+} else if (type === "excited") {
+nokoFace.textContent = "🤩";
+noko.classList.remove("mascot-sleepy");
+} else if (type === "shy") {
+nokoFace.textContent = "🥺";
+noko.classList.remove("mascot-sleepy");
+} else if (type === "confused") {
+nokoFace.textContent = "😕";
+noko.classList.remove("mascot-sleepy");
+} else if (type === "happy") {
+nokoFace.textContent = "🐒";
+noko.classList.remove("mascot-sleepy");
+} else {
+nokoFace.textContent = "🐒";
+noko.classList.remove("mascot-sleepy");
+}
+}
+
+function resetIdleTimer() {
+if (idleTimer) clearTimeout(idleTimer);
+idleTimer = setTimeout(() => {
+// idle -> tiny sleepy mode
+setNokoSize("tiny");
+setNokoExpression("sleepy");
+playNokoSound("sleepy");
+}, 30000); // 30s
+}
+
+// Dragging
+noko.addEventListener("mousedown", (e) => {
+isDragging = true;
+noko.classList.add("dragging");
+setNokoSize("big");
+setNokoExpression("excited");
+playNokoSound("drag");
+
+const rect = noko.getBoundingClientRect();
+dragOffsetX = e.clientX - rect.left;
+dragOffsetY = e.clientY - rect.top;
+
+resetIdleTimer();
+});
+
+document.addEventListener("mousemove", (e) => {
+if (!isDragging) return;
+const x = e.clientX - dragOffsetX;
+const y = e.clientY - dragOffsetY;
+
+noko.style.left = x + "px";
+noko.style.top = y + "px";
+
+// Save position
+localStorage.setItem("nokoPosX", x);
+localStorage.setItem("nokoPosY", y);
+});
+
+document.addEventListener("mouseup", () => {
+if (!isDragging) return;
+isDragging = false;
+noko.classList.remove("dragging");
+setNokoSize("big");
+setTimeout(() => setNokoSize("normal"), 250);
+playNokoSound("drop");
+setNokoExpression("happy");
+resetIdleTimer();
+});
+
+// Restore position
+window.addEventListener("load", () => {
+const x = localStorage.getItem("nokoPosX");
+const y = localStorage.getItem("nokoPosY");
+if (x !== null && y !== null) {
+noko.style.left = x + "px";
+noko.style.top = y + "px";
+}
+resetIdleTimer();
+});
+
+// Reactions to typing
+const queryInput = document.getElementById("query");
+queryInput.addEventListener("input", () => {
+const v = queryInput.value.toLowerCase();
+resetIdleTimer();
+
+if (v.includes("banana")) {
+setNokoSize("mega");
+setNokoExpression("excited");
+playNokoSound("banana");
+setTimeout(() => { setNokoSize("big"); setNokoExpression("happy"); }, 600);
+} else if (v.includes("games")) {
+setNokoSize("big");
+setNokoExpression("excited");
+playNokoSound("games");
+} else if (v.includes("school")) {
+setNokoSize("normal");
+setNokoExpression("confused");
+playNokoSound("confused");
+} else if (v.includes("help")) {
+setNokoSize("big");
+setNokoExpression("shy");
+playNokoSound("help");
+} else if (v.includes("sad")) {
+setNokoSize("tiny");
+setNokoExpression("shy");
+playNokoSound("sad");
+} else if (v.includes("monkey")) {
+setNokoSize("big");
+setNokoExpression("happy");
+playNokoSound("happy");
+} else if (v.includes("shh") || v.includes("quiet")) {
+setNokoSize("tiny");
+setNokoExpression("shy");
+} else {
+setNokoSize("normal");
+setNokoExpression("happy");
+}
+});
+
+/* ---------- Cloak mode ---------- */
+const cloakDot = document.getElementById("cloakDot");
+
+function setCloak(active) {
+if (active) {
+document.documentElement.classList.add("cloak-active");
+localStorage.setItem("cloakMode", "true");
+// Noko hides / tiny in cloak
+setNokoSize("tiny");
+setNokoExpression("shy");
+noko.classList.add("mascot-hidden");
+playNokoSound("cloakOn");
+} else {
+document.documentElement.classList.remove("cloak-active");
+localStorage.setItem("cloakMode", "false");
+noko.classList.remove("mascot-hidden");
+setNokoSize("normal");
+setNokoExpression("happy");
+playNokoSound("cloakOff");
+}
+}
+
+cloakDot.addEventListener("click", () => {
+const isActive = document.documentElement.classList.contains("cloak-active");
+setCloak(!isActive);
+});
+
+// Load cloak state
+const savedCloak = localStorage.getItem("cloakMode") === "true";
+setCloak(savedCloak);
+
 </script>
 
 </body>
