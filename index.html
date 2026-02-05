@@ -3,64 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>NatureMonkey Browser</title>
-
 <style>
 * { box-sizing: border-box; }
-
-/* ========================= */
-/* LOADING SCREEN (NEW)      */
-/* ========================= */
-#loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #000;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 999999;
-  color: #00ff88;
-  font-family: Arial, sans-serif;
-  transition: opacity 0.6s ease;
-}
-
-#loading-monkey {
-  font-size: 80px;
-  animation: monkeyRun 1s infinite linear;
-  filter: drop-shadow(0 0 10px #00ff88);
-}
-
-#loading-text {
-  margin-top: 20px;
-  font-size: 22px;
-  letter-spacing: 2px;
-  animation: pulse 1.5s infinite ease-in-out;
-  color: #00ff88;
-}
-
-@keyframes monkeyRun {
-  0% { transform: translateX(-20px) rotate(0deg); }
-  50% { transform: translateX(20px) rotate(10deg); }
-  100% { transform: translateX(-20px) rotate(0deg); }
-}
-
-@keyframes pulse {
-  0% { opacity: 0.4; }
-  50% { opacity: 1; }
-  100% { opacity: 0.4; }
-}
-
-#loading-screen.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* ========================= */
-/* YOUR ORIGINAL CSS BELOW   */
-/* ========================= */
 
 body {
 margin: 0;
@@ -283,7 +227,7 @@ cursor: pointer;
 font-weight: bold;
 }
 
-/* Mascot */
+/* Noko mascot (AI monkey) */
 .mascot {
 position: fixed;
 bottom: 20px;
@@ -374,7 +318,7 @@ animation: mascotFloat 3s ease-in-out infinite;
 .mascot-sleepy .mascot-face { filter: brightness(0.8); }
 .mascot-hidden { opacity: 0; pointer-events: none; }
 
-/* Cloak mode */
+/* Hidden cloak dot */
 .cloak-dot {
 position: fixed;
 top: 4px;
@@ -391,6 +335,7 @@ z-index: 30;
 background: rgba(255,255,255,0.1);
 }
 
+/* CLOAK MODE: fake learning site */
 .cloak-wrapper {
 display: none;
 position: relative;
@@ -495,6 +440,7 @@ color: #6b7280;
 margin-top: 4px;
 }
 
+/* Simple toggle in settings for sound (label only, logic in JS) */
 .settings-panel .inline {
 display: flex;
 align-items: center;
@@ -502,16 +448,7 @@ gap: 6px;
 }
 </style>
 </head>
-
 <body>
-
-<!-- ========================= -->
-<!-- LOADING SCREEN (NEW)      -->
-<!-- ========================= -->
-<div id="loading-screen">
-  <div id="loading-monkey">🐒</div>
-  <div id="loading-text">Loading...</div>
-</div>
 
 <div class="orb"></div>
 <div class="orb2"></div>
@@ -584,7 +521,7 @@ Code & projects
 </div>
 </div>
 
-<!-- Mascot -->
+<!-- Noko AI Monkey (draggable) -->
 <div class="mascot size-normal mascot-floating" id="noko">
 <div class="mascot-core">
 <div class="mascot-glow"></div>
@@ -593,9 +530,10 @@ Code & projects
 </div>
 </div>
 
-<!-- Cloak -->
+<!-- Hidden cloak dot -->
 <div class="cloak-dot" id="cloakDot"></div>
 
+<!-- Cloak mode fake learning hub -->
 <div class="cloak-wrapper" id="cloakWrapper">
 <div class="cloak-card cloak-header">
 <div>
@@ -609,4 +547,322 @@ Code & projects
 <strong>Upcoming Assignments</strong>
 <table class="cloak-table">
 <tr>
-<th>Class</
+<th>Class</th><th>Task</th><th>Due</th><th>Status</th>
+</tr>
+<tr>
+<td>Math</td><td>Practice worksheet</td><td>Tomorrow</td><td><span class="cloak-tag">In progress</span></td>
+</tr>
+<tr>
+<td>Science</td><td>Chapter 4 reading</td><td>Friday</td><td>Not started</td>
+</tr>
+<tr>
+<td>English</td><td>Essay outline</td><td>Next week</td><td>Not started</td>
+</tr>
+</table>
+</div>
+
+<div class="cloak-card">
+<strong>Study Notes</strong>
+<input class="cloak-input" placeholder="Type quick notes about what you’re studying...">
+<div class="cloak-small">Notes are local to this device.</div>
+</div>
+
+<div class="cloak-card">
+<strong>Reading Time Tracker</strong>
+<div class="cloak-small">Today’s goal: 20 minutes of focused reading.</div>
+<input class="cloak-input" placeholder="Book / topic you’re reading...">
+</div>
+</div>
+
+<script>
+/* ---------- Search + settings ---------- */
+function search(engine) {
+const q = document.getElementById('query').value.trim();
+if (!q) return;
+
+let url = '';
+if (engine === 'google') url = 'https://www.google.com/search?q=' + encodeURIComponent(q);
+if (engine === 'bing') url = 'https://www.bing.com/search?q=' + encodeURIComponent(q);
+if (engine === 'duckduckgo') url = 'https://duckduckgo.com/?q=' + encodeURIComponent(q);
+if (engine === 'youtube') url = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q);
+if (engine === 'wikipedia') url = 'https://en.wikipedia.org/wiki/Special:Search?search=' + encodeURIComponent(q);
+
+window.location.href = url;
+}
+
+document.getElementById('query').addEventListener('keydown', e => {
+if (e.key === 'Enter') {
+const def = localStorage.getItem("defaultEngine") || "google";
+search(def);
+}
+});
+
+function openLink(url) { window.location.href = url; }
+
+function toggleSettings() {
+const panel = document.getElementById("settingsPanel");
+panel.classList.toggle("open");
+}
+
+document.addEventListener("click", function(e) {
+const panel = document.getElementById("settingsPanel");
+const btn = document.querySelector(".settings-btn");
+if (!panel.contains(e.target) && !btn.contains(e.target)) {
+panel.classList.remove("open");
+}
+});
+
+function applyTheme() {
+const theme = document.getElementById("themeSelect").value;
+document.body.className = theme === "neon" ? "" : theme;
+saveSettings();
+}
+
+function toggleTilesFunc() {
+const show = document.getElementById("toggleTiles").checked;
+document.getElementById("tiles").style.display = show ? "flex" : "none";
+saveSettings();
+}
+
+function saveSettings() {
+localStorage.setItem("theme", document.getElementById("themeSelect").value);
+localStorage.setItem("showTiles", document.getElementById("toggleTiles").checked);
+localStorage.setItem("defaultEngine", document.getElementById("defaultEngine").value);
+localStorage.setItem("nokoSound", document.getElementById("nokoSoundToggle").checked);
+}
+
+function loadSettings() {
+const theme = localStorage.getItem("theme") || "neon";
+const showTiles = localStorage.getItem("showTiles") !== "false";
+const def = localStorage.getItem("defaultEngine") || "google";
+const nokoSound = localStorage.getItem("nokoSound") !== "false";
+
+document.getElementById("themeSelect").value = theme;
+document.getElementById("defaultEngine").value = def;
+document.getElementById("toggleTiles").checked = showTiles;
+document.getElementById("nokoSoundToggle").checked = nokoSound;
+
+applyTheme();
+toggleTilesFunc();
+}
+
+function resetSettings() {
+localStorage.clear();
+loadSettings();
+}
+
+loadSettings();
+
+/* ---------- Noko sound engine (simple beeps) ---------- */
+let audioCtx = null;
+function playNokoSound(type) {
+const soundEnabled = document.getElementById("nokoSoundToggle").checked;
+if (!soundEnabled) return;
+
+if (!audioCtx) {
+audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+
+const osc = audioCtx.createOscillator();
+const gain = audioCtx.createGain();
+
+let freq = 600;
+if (type === "drag") freq = 700;
+if (type === "drop") freq = 500;
+if (type === "happy") freq = 800;
+if (type === "excited") freq = 900;
+if (type === "sleepy") freq = 300;
+if (type === "shy") freq = 650;
+if (type === "confused") freq = 450;
+if (type === "cloakOn") freq = 350;
+if (type === "cloakOff") freq = 750;
+if (type === "banana") freq = 1000;
+if (type === "games") freq = 950;
+if (type === "help") freq = 550;
+if (type === "sad") freq = 280;
+
+osc.frequency.value = freq;
+gain.gain.value = 0.12;
+
+osc.connect(gain);
+gain.connect(audioCtx.destination);
+
+osc.start();
+osc.stop(audioCtx.currentTime + 0.12);
+}
+
+/* ---------- Noko AI monkey logic ---------- */
+const noko = document.getElementById("noko");
+const nokoFace = document.getElementById("nokoFace");
+let nokoSizeState = "normal"; // tiny, normal, big, mega
+let isDragging = false;
+let dragOffsetX = 0;
+let dragOffsetY = 0;
+let idleTimer = null;
+
+function setNokoSize(state) {
+noko.classList.remove("size-tiny", "size-normal", "size-big", "size-mega");
+if (state === "tiny") noko.classList.add("size-tiny");
+if (state === "normal") noko.classList.add("size-normal");
+if (state === "big") noko.classList.add("size-big");
+if (state === "mega") noko.classList.add("size-mega");
+nokoSizeState = state;
+}
+
+function setNokoExpression(type) {
+if (type === "sleepy") {
+nokoFace.textContent = "😴";
+noko.classList.add("mascot-sleepy");
+} else if (type === "excited") {
+nokoFace.textContent = "🤩";
+noko.classList.remove("mascot-sleepy");
+} else if (type === "shy") {
+nokoFace.textContent = "🥺";
+noko.classList.remove("mascot-sleepy");
+} else if (type === "confused") {
+nokoFace.textContent = "😕";
+noko.classList.remove("mascot-sleepy");
+} else if (type === "happy") {
+nokoFace.textContent = "🐒";
+noko.classList.remove("mascot-sleepy");
+} else {
+nokoFace.textContent = "🐒";
+noko.classList.remove("mascot-sleepy");
+}
+}
+
+function resetIdleTimer() {
+if (idleTimer) clearTimeout(idleTimer);
+idleTimer = setTimeout(() => {
+// idle -> tiny sleepy mode
+setNokoSize("tiny");
+setNokoExpression("sleepy");
+playNokoSound("sleepy");
+}, 30000); // 30s
+}
+
+// Dragging
+noko.addEventListener("mousedown", (e) => {
+isDragging = true;
+noko.classList.add("dragging");
+setNokoSize("big");
+setNokoExpression("excited");
+playNokoSound("drag");
+
+const rect = noko.getBoundingClientRect();
+dragOffsetX = e.clientX - rect.left;
+dragOffsetY = e.clientY - rect.top;
+
+resetIdleTimer();
+});
+
+document.addEventListener("mousemove", (e) => {
+if (!isDragging) return;
+const x = e.clientX - dragOffsetX;
+const y = e.clientY - dragOffsetY;
+
+noko.style.left = x + "px";
+noko.style.top = y + "px";
+
+// Save position
+localStorage.setItem("nokoPosX", x);
+localStorage.setItem("nokoPosY", y);
+});
+
+document.addEventListener("mouseup", () => {
+if (!isDragging) return;
+isDragging = false;
+noko.classList.remove("dragging");
+setNokoSize("big");
+setTimeout(() => setNokoSize("normal"), 250);
+playNokoSound("drop");
+setNokoExpression("happy");
+resetIdleTimer();
+});
+
+// Restore position
+window.addEventListener("load", () => {
+const x = localStorage.getItem("nokoPosX");
+const y = localStorage.getItem("nokoPosY");
+if (x !== null && y !== null) {
+noko.style.left = x + "px";
+noko.style.top = y + "px";
+}
+resetIdleTimer();
+});
+
+// Reactions to typing
+const queryInput = document.getElementById("query");
+queryInput.addEventListener("input", () => {
+const v = queryInput.value.toLowerCase();
+resetIdleTimer();
+
+if (v.includes("banana")) {
+setNokoSize("mega");
+setNokoExpression("excited");
+playNokoSound("banana");
+setTimeout(() => { setNokoSize("big"); setNokoExpression("happy"); }, 600);
+} else if (v.includes("games")) {
+setNokoSize("big");
+setNokoExpression("excited");
+playNokoSound("games");
+} else if (v.includes("school")) {
+setNokoSize("normal");
+setNokoExpression("confused");
+playNokoSound("confused");
+} else if (v.includes("help")) {
+setNokoSize("big");
+setNokoExpression("shy");
+playNokoSound("help");
+} else if (v.includes("sad")) {
+setNokoSize("tiny");
+setNokoExpression("shy");
+playNokoSound("sad");
+} else if (v.includes("monkey")) {
+setNokoSize("big");
+setNokoExpression("happy");
+playNokoSound("happy");
+} else if (v.includes("shh") || v.includes("quiet")) {
+setNokoSize("tiny");
+setNokoExpression("shy");
+} else {
+setNokoSize("normal");
+setNokoExpression("happy");
+}
+});
+
+/* ---------- Cloak mode ---------- */
+const cloakDot = document.getElementById("cloakDot");
+
+function setCloak(active) {
+if (active) {
+document.documentElement.classList.add("cloak-active");
+localStorage.setItem("cloakMode", "true");
+// Noko hides / tiny in cloak
+setNokoSize("tiny");
+setNokoExpression("shy");
+noko.classList.add("mascot-hidden");
+playNokoSound("cloakOn");
+} else {
+document.documentElement.classList.remove("cloak-active");
+localStorage.setItem("cloakMode", "false");
+noko.classList.remove("mascot-hidden");
+setNokoSize("normal");
+setNokoExpression("happy");
+playNokoSound("cloakOff");
+}
+}
+
+cloakDot.addEventListener("click", () => {
+const isActive = document.documentElement.classList.contains("cloak-active");
+setCloak(!isActive);
+});
+
+// Load cloak state
+const savedCloak = localStorage.getItem("cloakMode") === "true";
+setCloak(savedCloak);
+
+</script>
+
+</body>
+</html>
